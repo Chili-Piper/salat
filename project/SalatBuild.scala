@@ -23,137 +23,40 @@
 import sbt._
 import Keys._
 
-object SalatBuild extends Build {
-
-  import Dependencies._
-  import BuildSettings._
-
-  val testDeps = Seq(logbackCore, specs2, logbackClassic, casbah_specs, casbah_commons)
-  val utilDeps = Seq(slf4jApi) ++ testDeps
-  val coreDeps = Seq(casbah, commonsLang) ++ testDeps
-
-  lazy val salat = Project(
-    id = "salat",
-    base = file("."),
-    settings = buildSettings ++ Seq(
-      publishArtifact in (Compile, packageBin) := false,
-      publishArtifact in (Compile, packageDoc) := false,
-      publishArtifact in (Compile, packageSrc) := false
-    ),
-    aggregate = Seq(util, core)
-  ) dependsOn(util, core)
-
-  lazy val util = {
-    val id = "salat-util"
-    val base = file("salat-util")
-    val settings = buildSettings ++ Seq(
-      libraryDependencies ++= utilDeps,
-      libraryDependencies <+= scalaVersion("org.scala-lang" % "scalap" % _),
-      libraryDependencies <++= scalaVersion(sv => Seq(Helpers.json4sNative(sv)))
-    )
-    Project(id = id, base = base, settings = settings)
-  }
-
-  lazy val core = Project(
-    id = "salat-core",
-    base = file("salat-core"),
-    settings = buildSettings ++ Seq(
-      libraryDependencies ++= coreDeps,
-      libraryDependencies <++= scalaVersion(sv => Seq(Helpers.json4sNative(sv)))
-    )
-  ) dependsOn (util)
-
-}
-
 object BuildSettings {
 
   import Repos._
 
   val buildOrganization = "com.github.salat"
   val buildVersion = "1.11.3-SNAPSHOT"
-  val buildScalaVersion = "2.11.12"
+  val buildScalaVersion = "2.13.2"
 
-  val buildSettings = Defaults.coreDefaultSettings ++ Scalariform.settings ++ Publish.settings ++ Seq(
+  val buildSettings = Defaults.coreDefaultSettings ++ Seq(
     organization := buildOrganization,
     version := buildVersion,
     scalaVersion := buildScalaVersion,
-    shellPrompt := ShellPrompt.buildShellPrompt,
     parallelExecution in Test := false,
     testFrameworks += TestFrameworks.Specs2,
     resolvers ++= Seq(typeSafeRepo, typeSafeSnapsRepo, oss, ossSnaps, scalazBintrayRepo),
-    javacOptions ++= Seq("-source", "1.7", "-target", "1.7"),
+    javacOptions ++= Seq("-source", "1.8", "-target", "1.8"),
     scalacOptions ++= Seq("-deprecation", "-unchecked", "-feature", "-language:_"),
-    crossScalaVersions ++= Seq("2.10.7", "2.11.12", "2.12.8")
-  )
-}
-
-object Scalariform {
-
-import com.typesafe.sbt.SbtScalariform._
-import scalariform.formatter.preferences._
-
-  val settings = scalariformSettings ++ Seq(
-    ScalariformKeys.preferences := FormattingPreferences().
-      setPreference(AlignArguments, true).
-      setPreference(AlignParameters, true).
-      setPreference(AlignSingleLineCaseStatements, true).
-      setPreference(CompactControlReadability, true).
-      setPreference(DoubleIndentClassDeclaration, true).
-      setPreference(FormatXml, true).
-      setPreference(IndentLocalDefs, true).
-      setPreference(PreserveSpaceBeforeArguments, true). // otherwise scalatest DSL gets mangled
-      setPreference(SpacesAroundMultiImports, false) // this agrees with IntelliJ defaults
-  )
-}
-
-object Publish {
-
-  lazy val settings = xerial.sbt.Sonatype.sonatypeSettings ++ Seq(
-    publishMavenStyle := true,
-    publishTo <<= version { (v: String) =>
-      val nexus = "https://oss.sonatype.org/"
-      if (v.trim.endsWith("SNAPSHOT"))
-        Some("snapshots" at nexus + "content/repositories/snapshots")
-      else
-        Some("releases"  at nexus + "service/local/staging/deploy/maven2")
-    },
-    publishArtifact in Test := false,
-    pomIncludeRepository := { _ => false },
-    licenses := Seq("Apache 2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0")),
-    homepage := Some(url("https://github.com/salat/salat")),
-    pomExtra := (
-      <scm>
-        <url>git://github.com/salat/salat.git</url>
-        <connection>scm:git://github.com/salat/salat.git</connection>
-      </scm>
-      <developers>
-        <developer>
-          <id>rktoomey</id>
-          <name>Rose Toomey</name>
-          <url>http://github.com/rktoomey</url>
-        </developer>
-        <developer>
-          <id>noahlz</id>
-          <name>Noah Zucker</name>
-          <url>http://github.com/noahlz</url>
-        </developer>
-      </developers>)
+    crossScalaVersions ++= Seq("2.13.2")
   )
 }
 
 object Dependencies {
 
   private val LogbackVersion = "1.1.8"
-  private val CasbahVersion = "3.1.1"
+  private val CasbahVersion = "4.0.0-RC0"
 
-  val specs2 = "org.specs2" %% "specs2" % "2.4.17" % "test"
+  val specs2 = "org.specs2" %% "specs2-core" % "4.9.4" % "test"
   val commonsLang = "commons-lang" % "commons-lang" % "2.6" % "test"
   val slf4jApi = "org.slf4j" % "slf4j-api" % "1.7.21"
   val logbackCore = "ch.qos.logback" % "logback-core" % LogbackVersion % "test"
   val logbackClassic = "ch.qos.logback" % "logback-classic" % LogbackVersion % "test"
-  val casbah = "org.mongodb" %% "casbah-core" % CasbahVersion
-  val casbah_commons = "org.mongodb" %% "casbah-commons" % CasbahVersion % "test"
-  val casbah_specs = "org.mongodb" %% "casbah-commons" % CasbahVersion % "test" classifier "tests"
+  val casbah = "com.chilipiper" %% "casbah-core" % CasbahVersion
+  val casbah_commons = "com.chilipiper" %% "casbah-commons" % CasbahVersion % "test"
+  val casbah_specs = "com.chilipiper" %% "casbah-commons" % CasbahVersion % "test" classifier "tests"
 }
 
 object Repos {
@@ -167,7 +70,7 @@ object Repos {
 object Helpers {
   def json4sNative(scalaVersion: String) =
     scalaVersion match {
-      case "2.12.8" => "org.json4s" %% "json4s-native" % "3.4.2"
+      case "2.13.2" => "org.json4s" %% "json4s-native" % "3.6.7"
       case _ => "org.json4s" %% "json4s-native" % "3.2.9"
     }
 }
