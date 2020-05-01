@@ -31,11 +31,12 @@ package salat.bson
 import com.mongodb.casbah.Imports._
 import org.bson._
 import org.bson.types.BasicBSONList
+import scala.jdk.javaapi.CollectionConverters._
 
 object BSONObjectToMongoDbObject {
 
   def apply(bo: BSONObject): MongoDBObject = {
-    val map = scala.collection.JavaConversions.mapAsScalaMap(bo.asInstanceOf[BasicBSONObject])
+    val map = asScala(bo.asInstanceOf[BasicBSONObject])
     val builder = MongoDBObject.newBuilder
     map.foreach {
       case (k, v) =>
@@ -55,7 +56,7 @@ object BSONObjectToMongoDbObject {
       builder.result()
     }
     case bo: BasicBSONObject => {
-      val map = scala.collection.JavaConversions.mapAsScalaMap(bo)
+      val map = asScala(bo)
       val builder = MongoDBObject.newBuilder
       map.foreach {
         case (k, v) =>

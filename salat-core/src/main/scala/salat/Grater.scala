@@ -51,7 +51,7 @@ abstract class Grater[X <: AnyRef](val clazz: Class[X])(implicit val ctx: Contex
 
   def asDBObject(o: X): DBObject
 
-  def asObject[A <% MongoDBObject](dbo: A): X
+  def asObject[A](dbo: A)(implicit ev$1: A => MongoDBObject): X
 
   def toMap(o: X): Map[String, Any]
 
@@ -63,11 +63,11 @@ abstract class Grater[X <: AnyRef](val clazz: Class[X])(implicit val ctx: Contex
 
   def toCompactJSON(o: X): String = compact(render(toJSON(o)))
 
-  def toJSONArray(t: Traversable[X]): JArray = JArray(t.map(toJSON(_)).toList)
+  def toJSONArray(t: Iterable[X]): JArray = JArray(t.map(toJSON(_)).toList)
 
-  def toPrettyJSONArray(t: Traversable[X]): String = pretty(render(toJSONArray(t)))
+  def toPrettyJSONArray(t: Iterable[X]): String = pretty(render(toJSONArray(t)))
 
-  def toCompactJSONArray(t: Traversable[X]): String = compact(render(toJSONArray(t)))
+  def toCompactJSONArray(t: Iterable[X]): String = compact(render(toJSONArray(t)))
 
   def fromJSON(j: JObject): X
 
@@ -299,7 +299,7 @@ abstract class ConcreteGrater[X <: CaseClass](clazz: Class[X])(implicit ctx: Con
     builder.result()
   }
 
-  def asObject[A <% MongoDBObject](dbo: A): X =
+  def asObject[A](dbo: A)(implicit ev$1: A => MongoDBObject): X =
     if (ca.sym.isModule) {
       ca.companionObject.asInstanceOf[X]
     }
@@ -491,7 +491,7 @@ case class DefaultArg(clazz: Class[_], field: SField, value: Option[AnyRef])(imp
   }
 
   lazy val isEmptyTraversable = value match {
-    case Some(t: Traversable[_]) if t.asInstanceOf[Traversable[_]].isEmpty => true
+    case Some(t: Iterable[_]) if t.asInstanceOf[Iterable[_]].isEmpty => true
     case _ => false
   }
 }

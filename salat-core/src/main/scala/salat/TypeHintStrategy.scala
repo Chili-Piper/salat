@@ -33,6 +33,7 @@ import java.util.regex.Pattern
 import salat.util.encoding.TypeHintEncoding
 import salat.util.{ClassPrettyPrinter, Logging}
 
+import scala.jdk.javaapi.CollectionConverters._
 // TODO: oof.  this is not OO design at its most graceful.  refactor it!
 
 trait TypeHintStrategy {
@@ -78,8 +79,8 @@ case class BinaryTypeHintStrategy(when: TypeHintFrequency.Value, typeHint: Strin
 
   private val PossibleBigInt = Pattern.compile("^[-]?\\d+$")
 
-  protected[salat] val toTypeHint: scala.collection.concurrent.Map[String, BigInt] = scala.collection.convert.Wrappers.JConcurrentMapWrapper(new ConcurrentHashMap[String, BigInt]())
-  protected[salat] val fromTypeHint: scala.collection.concurrent.Map[BigInt, String] = scala.collection.convert.Wrappers.JConcurrentMapWrapper(new ConcurrentHashMap[BigInt, String]())
+  protected[salat] val toTypeHint: scala.collection.concurrent.Map[String, BigInt] = asScala(new ConcurrentHashMap[String, BigInt]())
+  protected[salat] val fromTypeHint: scala.collection.concurrent.Map[BigInt, String] = asScala(new ConcurrentHashMap[BigInt, String]())
 
   assume(
     when == TypeHintFrequency.Never || (typeHint != null && typeHint.nonEmpty),

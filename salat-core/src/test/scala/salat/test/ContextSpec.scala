@@ -219,70 +219,70 @@ class ContextSpec extends SalatSpec {
     "provide a lookup method that lazily generates and returns graters" in {
       "by class name for a case class" in new testContext {
         ctx.graters must beEmpty
-        val g_* = ctx.lookup(caseClazz.getName)
-        g_*.clazz.getName must_== (new ConcreteGrater[James](caseClazz)(ctx) {}).clazz.getName
+        val g_ = ctx.lookup(caseClazz.getName)
+        g_.clazz.getName must_== (new ConcreteGrater[James](caseClazz)(ctx) {}).clazz.getName
         ctx.graters must have size (1)
       }
       "by class name for a case object" in new testContext {
         ctx.graters must beEmpty
-        val g_* = ctx.lookup(caseObjectClazz.getName)
-        log.debug(g_*.toString)
+        val g_ = ctx.lookup(caseObjectClazz.getName)
+        log.debug(g_.toString)
         // TODO: can't get type for salat.test.model.Zoot$
-        //        g_*.clazz.getName must_== (new ProxyGrater[Zoot](caseObjectClazz)(ctx) {}).clazz.getName
+        //        g_.clazz.getName must_== (new ProxyGrater[Zoot](caseObjectClazz)(ctx) {}).clazz.getName
         ctx.graters must have size (1)
       }
       "by class name for an abstract class annotated with @Salat" in new testContext {
         ctx.graters must beEmpty
-        val g_* = ctx.lookup(annotatedAbstractClazz.getName)
-        g_*.clazz.getName must_== (new ProxyGrater[AbstractMaud](
+        val g_ = ctx.lookup(annotatedAbstractClazz.getName)
+        g_.clazz.getName must_== (new ProxyGrater[AbstractMaud](
           annotatedAbstractClazz.asInstanceOf[Class[AbstractMaud]]
         )(ctx) {}).clazz.getName
         ctx.graters must have size (1)
       }
       "by class name for an abstract class without @Salat annotation" in new testContext {
         ctx.graters must beEmpty
-        val g_* = ctx.lookup(abstractClazz.getName)
-        g_*.clazz.getName must_== (new ProxyGrater[UnannotatedAbstractMaud](
+        val g_ = ctx.lookup(abstractClazz.getName)
+        g_.clazz.getName must_== (new ProxyGrater[UnannotatedAbstractMaud](
           abstractClazz.asInstanceOf[Class[UnannotatedAbstractMaud]]
         )(ctx) {}).clazz.getName
         ctx.graters must have size (1)
       }
       "by class name for a trait annotated with @Salat" in new testContext {
         ctx.graters must beEmpty
-        val g_* = ctx.lookup(annotatedTraitClazz.getName)
-        g_*.clazz.getName must_== (new ProxyGrater[AnnotatedMaud](
+        val g_ = ctx.lookup(annotatedTraitClazz.getName)
+        g_.clazz.getName must_== (new ProxyGrater[AnnotatedMaud](
           annotatedTraitClazz.asInstanceOf[Class[AnnotatedMaud]]
         )(ctx) {}).clazz.getName
         ctx.graters must have size (1)
       }
       "by class name for a trait without @Salat annotation" in new testContext {
         ctx.graters must beEmpty
-        val g_* = ctx.lookup(traitClazz.getName)
-        g_*.clazz.getName must_== (new ProxyGrater[UnannotatedMaud](
+        val g_ = ctx.lookup(traitClazz.getName)
+        g_.clazz.getName must_== (new ProxyGrater[UnannotatedMaud](
           traitClazz.asInstanceOf[Class[UnannotatedMaud]]
         )(ctx) {}).clazz.getName
         ctx.graters must have size (1)
       }
       "by case class manifest" in new testContext {
         ctx.graters must beEmpty
-        val g_* = ctx.lookup[James]
-        g_* must beAnInstanceOf[Grater[James]]
-        g_*.clazz.getName must_== (new ConcreteGrater[James](classOf[James])(ctx) {}).clazz.getName
+        val g_ = ctx.lookup[James]
+        g_ must beAnInstanceOf[Grater[James]]
+        g_.clazz.getName must_== (new ConcreteGrater[James](classOf[James])(ctx) {}).clazz.getName
         ctx.graters must have size (1)
       }
       "by class name for instance of a case class" in new testContext {
         ctx.graters must beEmpty
-        val g_* = ctx.lookup(classOf[James].getName, James("Red Devil"))
-        //        g_* must beAnInstanceOf[Grater[_]]
-        g_*.clazz.getName must_== (new ConcreteGrater[James](classOf[James])(ctx) {}).clazz.getName
+        val g_ = ctx.lookup(classOf[James].getName, James("Red Devil"))
+        //        g_ must beAnInstanceOf[Grater[_]]
+        g_.clazz.getName must_== (new ConcreteGrater[James](classOf[James])(ctx) {}).clazz.getName
         ctx.graters must have size (1)
       }
       "by dbo with type hint" in new testContext {
         val dbo = MongoDBObject(TypeHint -> classOf[James].getName)
         ctx.graters must beEmpty
-        val g_* = ctx.lookup(dbo)
-        //        g_* must beAnInstanceOf[Grater[_]]
-        g_*.clazz.getName must_== (new ConcreteGrater[James](classOf[James])(ctx) {}).clazz.getName
+        val g_ = ctx.lookup(dbo)
+        //        g_ must beAnInstanceOf[Grater[_]]
+        g_.clazz.getName must_== (new ConcreteGrater[James](classOf[James])(ctx) {}).clazz.getName
         ctx.graters must have size (1)
       }
     }

@@ -59,7 +59,7 @@ object RichDuration {
   def median(arr: ArrayBuffer[Long]): Double = if (arr.nonEmpty) {
     val sorted = arr.sorted
     if (sorted.size % 2 == 1) {
-      sorted((sorted.size + 1) / 2 - 1)
+      sorted((sorted.size + 1) / 2 - 1).toDouble
     }
     else {
       val lower = sorted(sorted.size / 2 - 1)

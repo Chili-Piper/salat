@@ -42,9 +42,9 @@ class OptionSupportSpec extends SalatSpec {
         dbo must havePair("_typeHint" -> "salat.test.model.Rhoda")
         dbo must havePair("consumed" -> "flames")
 
-        val r_* = grater[Rhoda].asObject(dbo)
-        r_*.consumed must beSome("flames")
-        r_* must_== r
+        val r_ = grater[Rhoda].asObject(dbo)
+        r_.consumed must beSome("flames")
+        r_ must_== r
       }
       "with no value" in {
         val r = Rhoda(consumed = None)
@@ -52,9 +52,9 @@ class OptionSupportSpec extends SalatSpec {
         dbo must havePair("_typeHint" -> "salat.test.model.Rhoda")
         // TODO: what happened to must not haveKey
 
-        val r_* = grater[Rhoda].asObject(dbo)
-        r_*.consumed must beNone
-        r_* must_== r
+        val r_ = grater[Rhoda].asObject(dbo)
+        r_.consumed must beNone
+        r_ must_== r
       }
     }
     "support Option[BigDecimal]" in {
@@ -65,9 +65,9 @@ class OptionSupportSpec extends SalatSpec {
         dbo must havePair("_typeHint" -> "salat.test.model.Rhoda2")
         dbo must havePair("howHot" -> 451.0)
 
-        val r_* = grater[Rhoda2].asObject(dbo)
-        r_*.howHot must beSome(temp)
-        r_* must_== r
+        val r_ = grater[Rhoda2].asObject(dbo)
+        r_.howHot must beSome(temp)
+        r_ must_== r
       }
       "with no value" in {
         val r = Rhoda2(howHot = None)
@@ -75,9 +75,9 @@ class OptionSupportSpec extends SalatSpec {
         dbo must havePair("_typeHint" -> "salat.test.model.Rhoda2")
         // TODO: what happened to must not haveKey
 
-        val r_* = grater[Rhoda2].asObject(dbo)
-        r_*.howHot must beNone
-        r_* must_== r
+        val r_ = grater[Rhoda2].asObject(dbo)
+        r_.howHot must beNone
+        r_ must_== r
       }
     }
   }

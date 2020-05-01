@@ -40,7 +40,7 @@ sealed trait BigDecimalStrategy extends Logging {
 
   def out(value: Any): Any = value match {
     case s: scala.math.BigDecimal => out0(s)
-    case j: java.math.BigDecimal  => out0(BigDecimal(j, mathCtx))
+    case j: java.math.BigDecimal  => out0(new BigDecimal(j, mathCtx))
     case d: Double                => out0(BigDecimal(d.toString, mathCtx))
     case d: java.lang.Double      => out0(BigDecimal(d.toString, mathCtx))
     case i: Int                   => out0(BigDecimal(i.toString, mathCtx))
@@ -90,7 +90,7 @@ case class BigDecimalToStringStrategy(mathCtx: MathContext = DefaultMathContext)
 }
 
 case class BigDecimalToDoubleStrategy(mathCtx: MathContext = DefaultMathContext) extends BigDecimalStrategy {
-  protected[salat] def out0(x: BigDecimal) = x.doubleValue()
+  protected[salat] def out0(x: BigDecimal) = x.doubleValue
 }
 
 case class BigDecimalToBinaryStrategy(mathCtx: MathContext = DefaultMathContext) extends BigDecimalStrategy {
@@ -136,7 +136,7 @@ case object BigIntToBinaryStrategy extends BigIntStrategy {
 }
 
 case object BigIntToLongStrategy extends BigIntStrategy {
-  def out(bi: BigInt) = bi.longValue()
+  def out(bi: BigInt) = bi.longValue
 
   def out(bi: BigInteger) = bi.longValue()
 

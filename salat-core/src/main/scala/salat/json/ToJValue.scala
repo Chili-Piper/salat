@@ -37,6 +37,7 @@ import org.bson.types.BSONTimestamp
 import org.joda.time.{DateTime, DateTimeZone}
 import org.json4s._
 import org.json4s.native.JsonMethods._
+import scala.jdk.javaapi.CollectionConverters._
 
 import scala.tools.scalap.scalax.rules.scalasig.TypeRefType
 
@@ -99,9 +100,9 @@ object ToJValue extends Logging {
     case dbo: DBObject               => JObject(wrapDBObj(dbo).toList.map(v => JField(v._1, apply(v._2))))
     case ba: Array[Byte]             => JArray(ba.toList.map(JInt(_)))
     case m: Map[_, _]                => JObject(m.toList.map(v => JField(v._1.toString, apply(v._2))))
-    case m: java.util.Map[_, _]      => JObject(scala.collection.JavaConversions.mapAsScalaMap(m).toList.map(v => JField(v._1.toString, apply(v._2))))
+    case m: java.util.Map[_, _]      => JObject(asScala(m).toList.map(v => JField(v._1.toString, apply(v._2))))
     case iter: Iterable[_]           => JArray(iter.map(apply).toList)
-    case iter: java.lang.Iterable[_] => JArray(scala.collection.JavaConversions.iterableAsScalaIterable(iter).map(apply).toList)
+    case iter: java.lang.Iterable[_] => JArray(asScala(iter).map(apply).toList)
     case x                           => serialize(x)
   }
 
@@ -250,7 +251,7 @@ object FromJValue extends Logging {
       case i: JInt if tf.isLong          => i.values.toLong
       case i: JInt if tf.isDouble        => i.values.toDouble
       case i: JInt if tf.isFloat         => i.values.toFloat
-      case i: JInt                       => i.values.intValue()
+      case i: JInt                       => i.values.intValue
       case b: JBool                      => b.values
       case JsonAST.JNull if tf.isDouble  => Double.NaN
       case JsonAST.JNull                 => null

@@ -57,13 +57,13 @@ class BigDecimalPrecisionTest extends SalatSpec {
       val wr = coll.insert(dbo)
       //      println("WR: %s".format(wr))
 
-      val g_* = grater[George].asObject(coll.findOne().get)
-      g_* must_== g
-      g_*.number.precision must_== 16
-      g_*.someNumber.get.precision must_== 16
+      val g_ = grater[George].asObject(coll.findOne().get)
+      g_ must_== g
+      g_.number.precision must_== 16
+      g_.someNumber.get.precision must_== 16
 
-      g_*.number must not be equalTo(MorePrecisePi)
-      g_*.number must_== MorePrecisePi(mc)
+      g_.number must not be equalTo(MorePrecisePi)
+      g_.number must_== MorePrecisePi(mc)
 
     }
 
@@ -85,13 +85,13 @@ class BigDecimalPrecisionTest extends SalatSpec {
       val wr = coll.insert(dbo)
       //      println("WR: %s".format(wr))
 
-      val h_* = grater[George2].asObject(coll.findOne().get)
-      h_* must_== h
-      h_*.number.precision must_== 16
-      h_*.someNumber.get.precision must_== 16
+      val h_ = grater[George2].asObject(coll.findOne().get)
+      h_ must_== h
+      h_.number.precision must_== 16
+      h_.someNumber.get.precision must_== 16
 
-      h_*.number must not be equalTo(MorePrecisePi)
-      h_*.number must_== MorePrecisePi(mc)
+      h_.number must not be equalTo(MorePrecisePi)
+      h_.number must_== MorePrecisePi(mc)
 
     }
   }
@@ -110,8 +110,8 @@ class BigDecimalPrecisionTest extends SalatSpec {
       val wr = coll.insert(dbo)
       //       println("WR: %s".format(wr))
 
-      val i_* = grater[Ida].asObject(coll.findOne().get)
-      i_* must_== i
+      val i_ = grater[Ida].asObject(coll.findOne().get)
+      i_ must_== i
 
     }
 
@@ -126,8 +126,8 @@ class BigDecimalPrecisionTest extends SalatSpec {
       val wr = coll.insert(dbo)
       //       println("WR: %s".format(wr))
 
-      val i_* = grater[Ida].asObject(coll.findOne().get)
-      i_* must_== i
+      val i_ = grater[Ida].asObject(coll.findOne().get)
+      i_ must_== i
     }
   }
 

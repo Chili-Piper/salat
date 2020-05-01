@@ -51,7 +51,7 @@ abstract class Validates[T](validators: List[T => Either[Throwable, T]]) {
   }
 }
 
-case class MutilValidateError(ts: Traversable[Throwable]) extends Error(
+case class MutilValidateError(ts: Iterable[Throwable]) extends Error(
   """
     |Multidoc insert failed with the following errors:
     |%s
@@ -84,7 +84,7 @@ abstract class ValidatingSalatDAO[ObjectType <: AnyRef, ID <: Any](override val 
    *  @return list of object ids
    *         TODO: flatten list of IDs - why on earth didn't I do that in the first place?
    */
-  override def insert(docs: Traversable[ObjectType], wc: mongodb.WriteConcern) = if (docs.nonEmpty) {
+  override def insert(docs: Iterable[ObjectType], wc: mongodb.WriteConcern) = if (docs.nonEmpty) {
     val (failed, validated) = docs.map(validates(_)).partition(_.isLeft)
     val r = if (validated.nonEmpty) {
       super.insert(validated.map(_.right.get), wc)

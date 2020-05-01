@@ -45,8 +45,8 @@ class FloatSpec extends SalatSpec {
       val wr = coll.insert(dbo)
       //      println("WR: %s".format(wr))
 
-      val q_* = grater[Quentin].asObject(coll.findOne().get)
-      q_* must_== q
+      val q_ = grater[Quentin].asObject(coll.findOne().get)
+      q_ must_== q
     }
   }
 }

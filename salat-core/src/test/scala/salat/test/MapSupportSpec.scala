@@ -76,8 +76,8 @@ class MapSupportSpec extends SalatSpec {
       val coll = MongoClient()(SalatSpecDb)("map_support_test_1")
       val wr = coll.insert(dbo)
 
-      val ao_* = grater[AttributeObject].asObject(coll.findOne().get)
-      ao_* must_== ao
+      val ao_ = grater[AttributeObject].asObject(coll.findOne().get)
+      ao_ must_== ao
     }
 
     "support objects that contains of types: Map[String, Any], List[Any] and Option[Any]" in {
@@ -100,8 +100,8 @@ class MapSupportSpec extends SalatSpec {
       val coll = MongoClient()(SalatSpecDb)("map_support_test_2")
       val wr = coll.insert(dbo)
 
-      val view_* = grater[ViewMetaData].asObject(coll.findOne().get)
-      view_* must_== view
+      val view_ = grater[ViewMetaData].asObject(coll.findOne().get)
+      view_ must_== view
     }
 
   }

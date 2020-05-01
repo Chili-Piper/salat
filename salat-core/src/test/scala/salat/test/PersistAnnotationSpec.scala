@@ -47,9 +47,9 @@ class PersistAnnotationSpec extends SalatSpec {
         dbo must havePair("out" -> "out")
         dbo must havePair("toSea" -> "tuo tpews")
 
-        val m_* = grater[Maud].asObject(dbo)
-        m_* must_== m
-        m_*.toSea must_== m.toSea
+        val m_ = grater[Maud].asObject(dbo)
+        m_ must_== m
+        m_.toSea must_== m.toSea
       }
 
       "a value that requires a transformer" in {
@@ -66,9 +66,9 @@ class PersistAnnotationSpec extends SalatSpec {
           builder.result
         })
 
-        val m_* = grater[Maud2].asObject(dbo)
-        m_* must_== m
-        m_*.ida must_== m.ida
+        val m_ = grater[Maud2].asObject(dbo)
+        m_ must_== m
+        m_.ida must_== m.ida
       }
 
       "a var" in {
@@ -86,9 +86,9 @@ class PersistAnnotationSpec extends SalatSpec {
           builder.result
         })
 
-        val m_* = grater[Maud3].asObject(dbo)
-        m_* must_== m
-        m_*.ida must_== m.ida
+        val m_ = grater[Maud3].asObject(dbo)
+        m_ must_== m
+        m_.ida must_== m.ida
       }
 
     }
@@ -103,9 +103,9 @@ class PersistAnnotationSpec extends SalatSpec {
       dbo must havePair("toSea" -> "tuo tpews")
       dbo must not have key("ida") // ida had both @Ignore and @Persist - @Ignore wins
 
-      val m_* = grater[Maud4].asObject(dbo)
-      m_* must_== m
-      m_*.toSea must_== m.toSea
+      val m_ = grater[Maud4].asObject(dbo)
+      m_ must_== m
+      m_.toSea must_== m.toSea
     }
 
     "respect @Persist declared in a trait" in {
@@ -116,8 +116,8 @@ class PersistAnnotationSpec extends SalatSpec {
       dbo must havePair("out" -> "out")
       dbo must havePair("toSea" -> "tuo tpews") // persisted from Maud8 itself
       dbo must havePair("howFar" -> 8) // persisted from EvenMoreMaudLike trait
-      val m_* = grater[Maud8].asObject(dbo)
-      m_* must_== m
+      val m_ = grater[Maud8].asObject(dbo)
+      m_ must_== m
     }
 
     "respect @Persist declared in immediate superclass" in {
@@ -128,8 +128,8 @@ class PersistAnnotationSpec extends SalatSpec {
       dbo must havePair("out" -> "out")
       dbo must havePair("toSea" -> "tuo tpews") // persisted from Maud11 itself
       dbo must havePair("howFar" -> 8) // persisted from abstract superclass MaudAgain
-      val m_* = grater[Maud11].asObject(dbo)
-      m_* must_== m
+      val m_ = grater[Maud11].asObject(dbo)
+      m_ must_== m
     }
 
     "work with @Salat on a trait" in {
@@ -178,8 +178,8 @@ class PersistAnnotationSpec extends SalatSpec {
           listBuilder.result
         })
 
-        val m_* = grater[ManyMauds].asObject(dbo)
-        m_* must_== m
+        val m_ = grater[ManyMauds].asObject(dbo)
+        m_ must_== m
       }
 
       "where a collection is typed to a trait declaring @Persist" in {
@@ -229,8 +229,8 @@ class PersistAnnotationSpec extends SalatSpec {
           listBuilder.result
         })
 
-        val m_* = grater[Maudelic].asObject(dbo)
-        m_* must_== m
+        val m_ = grater[Maudelic].asObject(dbo)
+        m_ must_== m
       }
     }
   }

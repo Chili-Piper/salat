@@ -232,25 +232,25 @@ class JsonSpec extends Specification with Logging with JsonMatchers {
         // TODO: sort out type hinting when concrete grater is accessed via proxy grater without @Salat annotation
         "with a top-level trait" in {
           val i = Ivar(s = "Hello")
-          val i_* = grater[Helge].toPrettyJSON(i)
-          i_* must /("_t" -> "salat.test.json.Ivar")
-          i_* must /("s" -> "Hello")
+          val i_ = grater[Helge].toPrettyJSON(i)
+          i_ must /("_t" -> "salat.test.json.Ivar")
+          i_ must /("s" -> "Hello")
           val j = Johan(s = "Hello", d = 3.14)
-          val j_* = grater[Helge].toPrettyJSON(j)
-          j_* must /("_t" -> "salat.test.json.Johan")
-          j_* must /("s" -> "Hello")
-          j_* must /("d" -> 3.14)
+          val j_ = grater[Helge].toPrettyJSON(j)
+          j_ must /("_t" -> "salat.test.json.Johan")
+          j_ must /("s" -> "Hello")
+          j_ must /("d" -> 3.14)
         }
         "with an abstract superclass" in {
           val l = Ludvig(s = "Hello")
-          val l_* = grater[Kalle].toPrettyJSON(l)
-          l_* must /("_t" -> "salat.test.json.Ludvig")
-          l_* must /("s" -> "Hello")
+          val l_ = grater[Kalle].toPrettyJSON(l)
+          l_ must /("_t" -> "salat.test.json.Ludvig")
+          l_ must /("s" -> "Hello")
           val m = Martin(s = "Hello", d = 3.14)
-          val m_* = grater[Kalle].toPrettyJSON(m)
-          m_* must /("_t" -> "salat.test.json.Martin")
-          m_* must /("s" -> "Hello")
-          m_* must /("d" -> 3.14)
+          val m_ = grater[Kalle].toPrettyJSON(m)
+          m_ must /("_t" -> "salat.test.json.Martin")
+          m_ must /("s" -> "Hello")
+          m_ must /("d" -> 3.14)
         }
       }
     }

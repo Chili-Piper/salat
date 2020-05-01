@@ -43,7 +43,7 @@ class CustomGrater[ModelObject <: AnyRef](
 
   def asDBObject(o: ModelObject) = transformer.serialize(o)
 
-  def asObject[A <% MongoDBObject](dbo: A) = transformer.deserialize(unwrapDBObj(dbo))
+  def asObject[A](dbo: A)(implicit ev$1: A => MongoDBObject) = transformer.deserialize(unwrapDBObj(dbo))
 
   def toMap(o: ModelObject) = transformer.serialize(o).toMap.asInstanceOf[Map[String, Any]]
 

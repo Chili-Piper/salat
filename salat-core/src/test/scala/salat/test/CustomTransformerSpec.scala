@@ -42,8 +42,8 @@ class CustomTransformerSpec extends SalatSpec {
       val dbo = grater[Wibble].asDBObject(w)
       dbo should haveEntry("a" -> "a")
       dbo should haveEntry("b" -> 4)
-      val w_* = grater[Wibble].asObject(dbo)
-      w_* must_== w
+      val w_ = grater[Wibble].asObject(dbo)
+      w_ must_== w
     }
     "allow custom transformers for a Java class whose serialized representation is a DBObject" in {
       BicycleTransformer.supportsGrater must beTrue
@@ -52,8 +52,8 @@ class CustomTransformerSpec extends SalatSpec {
       dbo should haveEntry("cadence" -> 1)
       dbo should haveEntry("speed" -> 2)
       dbo should haveEntry("gear" -> 3)
-      val b_* = grater[Bicycle].asObject(dbo)
-      b_* must_== b
+      val b_ = grater[Bicycle].asObject(dbo)
+      b_ must_== b
     }
     "allow custom transformers for an embedded case class" in {
       val _id = new ObjectId
@@ -66,8 +66,8 @@ class CustomTransformerSpec extends SalatSpec {
       dbo should haveEntry("baz._t" -> baz.getClass.getName)
       dbo should haveEntry("baz.a" -> 1)
       dbo should haveEntry("baz.b" -> 3.14)
-      val foo_* = grater[Foo].asObject(dbo)
-      foo_* must_== foo
+      val foo_ = grater[Foo].asObject(dbo)
+      foo_ must_== foo
     }
     "allow custom transformers for an option on a case class" in {
       val _id = new ObjectId
@@ -80,8 +80,8 @@ class CustomTransformerSpec extends SalatSpec {
       dbo should haveEntry("baz._t" -> baz.getClass.getName)
       dbo should haveEntry("baz.a" -> 1)
       dbo should haveEntry("baz.b" -> 3.14)
-      val foo_* = grater[FooOptionBar].asObject(dbo)
-      foo_* must_== foo
+      val foo_ = grater[FooOptionBar].asObject(dbo)
+      foo_ must_== foo
     }
     "allow custom transformers for a traversable containing a case class" in {
       val _id = new ObjectId
@@ -96,8 +96,8 @@ class CustomTransformerSpec extends SalatSpec {
       dbo should haveEntry("baz._t" -> baz.getClass.getName)
       dbo should haveEntry("baz.a" -> 1)
       dbo should haveEntry("baz.b" -> 3.14)
-      val foo_* = grater[FooListBar].asObject(dbo)
-      foo_* must_== foo
+      val foo_ = grater[FooListBar].asObject(dbo)
+      foo_ must_== foo
     }
     "allow custom transformers for a map containing a case class" in {
       val _id = new ObjectId
@@ -112,8 +112,8 @@ class CustomTransformerSpec extends SalatSpec {
       dbo should haveEntry("baz._t" -> baz.getClass.getName)
       dbo should haveEntry("baz.a" -> 1)
       dbo should haveEntry("baz.b" -> 3.14)
-      val foo_* = grater[FooMapBar].asObject(dbo)
-      foo_* must_== foo
+      val foo_ = grater[FooMapBar].asObject(dbo)
+      foo_ must_== foo
     }
   }
 

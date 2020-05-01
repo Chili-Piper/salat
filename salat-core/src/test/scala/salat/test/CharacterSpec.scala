@@ -47,8 +47,8 @@ class CharacterSpec extends SalatSpec {
       val wr = coll.insert(dbo)
       //      println("WR: %s".format(wr))
 
-      val k_* = grater[Kate].asObject(coll.findOne().get)
-      k_* must_== k
+      val k_ = grater[Kate].asObject(coll.findOne().get)
+      k_ must_== k
     }
   }
 

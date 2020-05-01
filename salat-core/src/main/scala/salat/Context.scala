@@ -38,24 +38,31 @@ import salat.util._
 import salat.{Field => SField}
 import org.json4s.JsonAST.JObject
 
+import scala.jdk.javaapi.CollectionConverters._
+
+
 trait Context extends ContextLifecycle with Logging {
 
   /**Name of the context */
   val name: String
 
   /**Concurrent hashmap of classname to Grater */
-  private[salat] val graters: scala.collection.concurrent.Map[String, Grater[_ <: AnyRef]] = scala.collection.convert.Wrappers.JConcurrentMapWrapper(new ConcurrentHashMap[String, Grater[_ <: AnyRef]]())
+  private[salat] val graters: scala.collection.concurrent.Map[String, Grater[_ <: AnyRef]] =
+    asScala(new ConcurrentHashMap[String, Grater[_ <: AnyRef]]())
 
   /**Mutable seq of classloaders */
   private[salat] var classLoaders: Vector[ClassLoader] = Vector(this.getClass.getClassLoader)
 
   /**Global key remapping - for instance, always serialize "id" to "_id" */
-  private[salat] val globalKeyOverrides: scala.collection.concurrent.Map[String, String] = scala.collection.convert.Wrappers.JConcurrentMapWrapper(new ConcurrentHashMap[String, String]())
+  private[salat] val globalKeyOverrides: scala.collection.concurrent.Map[String, String] =
+    asScala(new ConcurrentHashMap[String, String]())
 
   /**Per class key overrides - map key is (clazz.getName, field name) */
-  private[salat] val perClassKeyOverrides: scala.collection.concurrent.Map[(String, String), String] = scala.collection.convert.Wrappers.JConcurrentMapWrapper(new ConcurrentHashMap[(String, String), String]())
+  private[salat] val perClassKeyOverrides: scala.collection.concurrent.Map[(String, String), String] =
+    asScala(new ConcurrentHashMap[(String, String), String]())
 
-  private[salat] val customTransformers: scala.collection.concurrent.Map[String, CustomTransformer[_ <: AnyRef, _ <: AnyRef]] = scala.collection.convert.Wrappers.JConcurrentMapWrapper(new ConcurrentHashMap[String, CustomTransformer[_ <: AnyRef, _ <: AnyRef]]())
+  private[salat] val customTransformers: scala.collection.concurrent.Map[String, CustomTransformer[_ <: AnyRef, _ <: AnyRef]] =
+    asScala(new ConcurrentHashMap[String, CustomTransformer[_ <: AnyRef, _ <: AnyRef]]())
 
   val typeHintStrategy: TypeHintStrategy = StringTypeHintStrategy(when = TypeHintFrequency.WhenNecessary, typeHint = TypeHint)
 
@@ -67,7 +74,7 @@ trait Context extends ContextLifecycle with Logging {
 
   private[salat] val neverSuppressTheseFields = scala.collection.mutable.Set[String]("_id")
 
-  def neverSuppressThisField(key: String) {
+  def neverSuppressThisField(key: String) = {
     neverSuppressTheseFields += key
     log.debug("neverSuppressThisField[%s]: never suppress field with key '%s'", name, key)
   }
@@ -82,11 +89,11 @@ trait Context extends ContextLifecycle with Logging {
 
   val jsonConfig: JSONConfig = JSONConfig()
 
-  private[salat] val caseObjectOverrides = scala.collection.convert.Wrappers.JConcurrentMapWrapper(new ConcurrentHashMap[String, String]())
-  private[salat] val resolveCaseObjectOverrides = scala.collection.convert.Wrappers.JConcurrentMapWrapper(new ConcurrentHashMap[(String, String), String]())
+  private[salat] val caseObjectOverrides = asScala(new ConcurrentHashMap[String, String]())
+  private[salat] val resolveCaseObjectOverrides = asScala(new ConcurrentHashMap[(String, String), String]())
   private[salat] val caseObjectHierarchy = scala.collection.mutable.Set[String]()
 
-  def registerCaseObjectOverride[A: Manifest, B <: A: Manifest](serializedValue: String) {
+  def registerCaseObjectOverride[A: Manifest, B <: A: Manifest](serializedValue: String) = {
 
     val parentClazz = manifest[A].runtimeClass
     val caseObjectClazz = manifest[B].runtimeClass
@@ -99,12 +106,12 @@ trait Context extends ContextLifecycle with Logging {
     log.trace("registerCaseObjectOverride[%s]: %s <- %s will serialize as '%s'", name, parentClazz.getSimpleName, caseObjectClazz.getSimpleName, serializedValue)
   }
 
-  def registerClassLoader(cl: ClassLoader) {
+  def registerClassLoader(cl: ClassLoader) = {
     classLoaders = cl +: classLoaders
     log.info("registerClassLoader: ctx='%s' registering classloader='%s' (total: %d)", name, cl.toString, classLoaders.size)
   }
 
-  def registerCustomTransformer[A <: AnyRef: Manifest, B <: AnyRef: Manifest](custom: CustomTransformer[A, B]) {
+  def registerCustomTransformer[A <: AnyRef: Manifest, B <: AnyRef: Manifest](custom: CustomTransformer[A, B]) = {
     if (customTransformers.contains(custom.path)) {
       sys.error("Context '%s' already contains a custom transformer for class='%s'!".format(name, custom.path))
     }
@@ -126,7 +133,7 @@ trait Context extends ContextLifecycle with Logging {
     else fieldName
   }
 
-  def registerPerClassKeyOverride(clazz: Class[_], remapThis: String, toThisInstead: String) {
+  def registerPerClassKeyOverride(clazz: Class[_], remapThis: String, toThisInstead: String) = {
     // for obvious reasons, we are not allowing a key override to be registered more than once
     assume(!perClassKeyOverrides.contains((clazz.getName, remapThis)), "registerPerClassKeyOverride: context=%s already has a global key override for clazz='%s'/key='%s' with value='%s'"
       .format(name, clazz.getName, remapThis, perClassKeyOverrides.get((clazz.getName, remapThis))))
@@ -140,7 +147,7 @@ trait Context extends ContextLifecycle with Logging {
     log.info("perClassKeyOverrides: context=%s will remap key='%s' to '%s' for all instance of clazz='%s'", name, remapThis, toThisInstead, clazz.getName)
   }
 
-  def registerGlobalKeyOverride(remapThis: String, toThisInstead: String) {
+  def registerGlobalKeyOverride(remapThis: String, toThisInstead: String) = {
     // think twice, register once
     assume(remapThis != null && remapThis.nonEmpty, "registerGlobalKeyOverride: key remapThis must be supplied!")
     assume(toThisInstead != null && toThisInstead.nonEmpty, "registerGlobalKeyOverride: value toThisInstead must be supplied!")
@@ -151,7 +158,7 @@ trait Context extends ContextLifecycle with Logging {
     log.info("registerGlobalKeyOverride: context=%s will globally remap key='%s' to '%s'", name, remapThis, toThisInstead)
   }
 
-  def accept(grater: Grater[_ <: AnyRef]) {
+  def accept(grater: Grater[_ <: AnyRef]) = {
     if (!graters.contains(grater.clazz.getName)) {
       graters += grater.clazz.getName -> grater
       log.trace("accept: ctx='%s' accepted grater[%s]", name, grater.clazz.getName)
@@ -312,7 +319,7 @@ DBO
 trait ContextLifecycle {
   self: Context =>
 
-  def clearAllGraters() {
+  def clearAllGraters() = {
     log.info("clearGraters: clearing...")
     graters.clear()
   }

@@ -81,7 +81,7 @@ class BigDecimalStrategyPerformanceSpec extends Specification with Logging {
       }
     }
 
-    def serialize(limit: Int) {
+    def serialize(limit: Int) = {
       //      log.debug("insert: %s - called with limit of %d", name, limit)
       for (i <- 0 until limit) {
         //        val r = (rangeMin + (rangeMax - rangeMin) * generator.nextGaussian()).toString
@@ -104,7 +104,7 @@ class BigDecimalStrategyPerformanceSpec extends Specification with Logging {
       deserialized
     }
 
-    def stats() {
+    def stats() = {
       log.info(
         """ 
 

@@ -45,8 +45,8 @@ class UUIDSupportSpec extends SalatSpec {
 
       val coll = MongoConnection()(SalatSpecDb)("uuid_test_1")
       val wr = coll.insert(dbo)
-      val o_* = grater[Olive].asObject(coll.findOne().get)
-      o_* must_== o
+      val o_ = grater[Olive].asObject(coll.findOne().get)
+      o_ must_== o
     }
 
     "support serializing and deserializing a msb/lsb uuid" in {
@@ -58,8 +58,8 @@ class UUIDSupportSpec extends SalatSpec {
 
       val coll = MongoConnection()(SalatSpecDb)("uuid_test_2")
       val wr = coll.insert(dbo)
-      val o_* = grater[Olive].asObject(coll.findOne().get)
-      o_* must_== o
+      val o_ = grater[Olive].asObject(coll.findOne().get)
+      o_ must_== o
     }
 
     "support serializing and deserializing a uuid with name from bytes" in {
@@ -71,8 +71,8 @@ class UUIDSupportSpec extends SalatSpec {
 
       val coll = MongoConnection()(SalatSpecDb)("uuid_test_3")
       val wr = coll.insert(dbo)
-      val o_* = grater[Olive].asObject(coll.findOne().get)
-      o_* must_== o
+      val o_ = grater[Olive].asObject(coll.findOne().get)
+      o_ must_== o
     }
 
   }

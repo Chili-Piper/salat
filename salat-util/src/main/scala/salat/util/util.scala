@@ -49,7 +49,7 @@ object `package` {
 
   def asyncSalat[T](stackSize: Long)(f: => T): T = {
     var result: Either[Throwable, T] = Left(new Error("no reply back, boo"))
-      def satisfy(r: Either[Throwable, Any]) {
+      def satisfy(r: Either[Throwable, Any]) = {
         result = r.asInstanceOf[Either[Throwable, T]]
       }
 
@@ -71,7 +71,7 @@ object `package` {
         case ie: InterruptedException => {}
       }
     }
-    result.right.getOrElse(throw result.left.get)
+    result.fold(x => throw x, identity)
   }
 
   // TODO: reflection.  i'm so ashamed.  but not so ashamed i wouldn't do it!

@@ -44,8 +44,8 @@ class SetSpec extends SalatSpec {
         val dbo: MongoDBObject = grater[ElephantSeal[String]].asDBObject(elephantSeal)
         dbo.get("distinctThings") must beSome[AnyRef]
 
-        val elephantSeal_* = grater[ElephantSeal[String]].asObject(dbo)
-        elephantSeal_*.distinctThings must_== expectedSet
+        val elephantSeal_ = grater[ElephantSeal[String]].asObject(dbo)
+        elephantSeal_.distinctThings must_== expectedSet
       }
 
       "handle sets" in {
@@ -63,11 +63,11 @@ class SetSpec extends SalatSpec {
         val dbo: MongoDBObject = grater[ElephantSeal[ElephantSeal[String]]].asDBObject(herd)
         dbo.get("distinctThings") must beSome[AnyRef]
 
-        val herd_* = grater[ElephantSeal[ElephantSeal[String]]].asObject(dbo)
-        herd_*.distinctThings must_== expectedHerd
-        // herd_*.distinctThings(0).distinctThings must_== expectedSet2
-        // herd_*.distinctThings(1).distinctThings must_== expectedSet3
-        // herd_*.distinctThings(2).distinctThings must_== expectedSet
+        val herd_ = grater[ElephantSeal[ElephantSeal[String]]].asObject(dbo)
+        herd_.distinctThings must_== expectedHerd
+        // herd_.distinctThings(0).distinctThings must_== expectedSet2
+        // herd_.distinctThings(1).distinctThings must_== expectedSet3
+        // herd_.distinctThings(2).distinctThings must_== expectedSet
       }
     }
   }

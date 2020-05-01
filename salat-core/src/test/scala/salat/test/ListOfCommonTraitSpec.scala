@@ -63,8 +63,8 @@ class ListOfCommonTraitSpec extends SalatSpec {
       dbo must havePair("e" -> scc.e)
       dbo must haveKey("theListWhichNeedsToBeTested") // TODO: look at casbah specs and figure out how to test a DBList
 
-      val scc_* = grater[SomeContainerClass].asObject(dbo)
-      scc_* must_== scc
+      val scc_ = grater[SomeContainerClass].asObject(dbo)
+      scc_ must_== scc
 
     }
 
@@ -74,8 +74,8 @@ class ListOfCommonTraitSpec extends SalatSpec {
       //        val sct1: SomeCommonTrait = SomeSubclassExtendingSaidTrait(b = 1)
       ////      val sct1Dbo: MongoDBObject = grater[SomeCommonTrait].asDBObject(sct1)
       ////      sct1Dbo must havePair("b" -> sct1.b)
-      ////      val sct1_* = grater[SomeCommonTrait].asObject(sct1Dbo)
-      ////      sct1_* must_== sct1
+      ////      val sct1_ = grater[SomeCommonTrait].asObject(sct1Dbo)
+      ////      sct1_ must_== sct1
       //        fail("TODO: probably never feasible, but look through scalasig and try to sort it out")
       //      }
       //    }
@@ -104,8 +104,8 @@ class ListOfCommonTraitSpec extends SalatSpec {
         dbo must havePair("e" -> scc.e)
         dbo must haveKey("theListWhichNeedsToBeTested") // TODO: look at casbah specs and figure out how to test a DBList
 
-        val scc_* = grater[SomeContainerClass].asObject(dbo)
-        scc_* must_== scc
+        val scc_ = grater[SomeContainerClass].asObject(dbo)
+        scc_ must_== scc
 
       }
 

@@ -167,7 +167,7 @@ class SalatDAOSpec extends SalatSpec {
     "support finding and modifying an existing record for a case class" in new alphaContext {
       val _id = AlphaDAO.insert(alpha3)
       _id must beSome(alpha3.id)
-      AlphaDAO.collection.count() must_== 1l
+      AlphaDAO.collection.count() must_== 1L
 
       val gammaList = List[Beta](Gamma("gamma4"))
       val newAlpha3 = alpha3.copy(beta = gammaList)
@@ -209,14 +209,14 @@ class SalatDAOSpec extends SalatSpec {
       _id must beSome(alpha3.id)
       AlphaDAO.collection.count() must_== 1L
 
-      val alpha3_* = alpha3.copy(beta = List[Beta](Gamma("gamma3")))
-      alpha3_* must_!= alpha3
-      val wr = AlphaDAO.save(alpha3_*)
+      val alpha3_ = alpha3.copy(beta = List[Beta](Gamma("gamma3")))
+      alpha3_ must_!= alpha3
+      val wr = AlphaDAO.save(alpha3_)
       wr.getN must_== 1L
       AlphaDAO.collection.count() must_== 1L
 
       val dbo: MongoDBObject = MongoConnection()(SalatSpecDb)(AlphaColl).findOne().get
-      grater[Alpha].asObject(dbo) must_== alpha3_*
+      grater[Alpha].asObject(dbo) must_== alpha3_
     }
 
     "support removing a case class" in new alphaContext {
@@ -306,8 +306,8 @@ class SalatDAOSpec extends SalatSpec {
       _id must beSome(e.id)
       EpsilonDAO.collection.count() must_== 1L
 
-      val e_* = EpsilonDAO.findOne(grater[Epsilon].asDBObject(e))
-      e_* must not beNone
+      val e_ = EpsilonDAO.findOne(grater[Epsilon].asDBObject(e))
+      e_ must not beNone
     }
 
     "support using a query to bring back a typed list of ids" in new alphaContextWithData {

@@ -49,8 +49,8 @@ class EnumSupportSpec extends SalatSpec {
         val me = Me("max")
         val g = grater[Me]
         val dbo = g.asDBObject(me)
-        val me_* = g.asObject(dbo)
-        me must_== me_*
+        val me_ = g.asObject(dbo)
+        me must_== me_
       }
     }
   }
@@ -68,8 +68,8 @@ class EnumSupportSpec extends SalatSpec {
       // dbo must havePair("thug" -> "Just a good boy who loves his mum")
       dbo must havePair("thug" -> ThugLevel.Three.toString)
 
-      val h_* = grater[Hector].asObject(dbo)
-      h_* must_== h
+      val h_ = grater[Hector].asObject(dbo)
+      h_ must_== h
     }
 
     "allow for context-level custom enum handling strategy" in {
@@ -84,8 +84,8 @@ class EnumSupportSpec extends SalatSpec {
       dbo must havePair("thug" -> 2)
       dbo must havePair("doneIn" -> 3)
 
-      val h_* = grater[Hector].asObject(dbo)
-      h_* must_== h
+      val h_ = grater[Hector].asObject(dbo)
+      h_ must_== h
 
     }
 
@@ -103,8 +103,8 @@ class EnumSupportSpec extends SalatSpec {
       dbo must havePair("thug" -> ThugLevel.Two.toString)
       dbo must havePair("doneInById" -> 1)
 
-      val h1_* = grater[HectorOverrideId].asObject(dbo)
-      h1_* must_== h1
+      val h1_ = grater[HectorOverrideId].asObject(dbo)
+      h1_ must_== h1
 
     }
 
@@ -124,8 +124,8 @@ class EnumSupportSpec extends SalatSpec {
       dbo must havePair("thug" -> 1)
       dbo must havePair("doneInByValue" -> "PiningForTheFjords")
 
-      val h1_* = grater[HectorOverrideValue].asObject(dbo)
-      h1_* must_== h1
+      val h1_ = grater[HectorOverrideValue].asObject(dbo)
+      h1_ must_== h1
 
     }
 

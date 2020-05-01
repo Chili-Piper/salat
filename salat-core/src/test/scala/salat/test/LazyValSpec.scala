@@ -49,12 +49,12 @@ class LazyValSpec extends SalatSpec {
       dbo.get("factorial") must beNone
       dbo.get("nthDegree") must beNone
 
-      val l_* = grater[LazyThing].asObject(dbo)
-      l_*.excuses must_== Seq(1, 2, 3)
-      l_*.firstExcuse must beSome(1)
-      l_*.lastExcuse must beSome(3)
-      l_*.factorial must_== 6
-      l_*.nthDegree must_== List(1, 7, 13, 19, 25, 31)
+      val l_ = grater[LazyThing].asObject(dbo)
+      l_.excuses must_== Seq(1, 2, 3)
+      l_.firstExcuse must beSome(1)
+      l_.lastExcuse must beSome(3)
+      l_.factorial must_== 6
+      l_.nthDegree must_== List(1, 7, 13, 19, 25, 31)
     }
   }
 }

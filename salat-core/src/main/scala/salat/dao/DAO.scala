@@ -88,7 +88,7 @@ trait BaseDAOMethods[ObjectType <: AnyRef, ID <: Any] {
    *  @return list of object ids
    *  TODO: flatten list of IDs - why on earth didn't I do that in the first place?
    */
-  def insert(docs: Traversable[ObjectType], wc: WriteConcern): List[Option[ID]]
+  def insert(docs: Iterable[ObjectType], wc: WriteConcern): List[Option[ID]]
 
   /**
    * Queries for a list of identifiers.
@@ -97,7 +97,7 @@ trait BaseDAOMethods[ObjectType <: AnyRef, ID <: Any] {
    *  @tparam A type view bound to DBObject
    *  @return list of IDs
    */
-  def ids[A <% DBObject](query: A): List[ID]
+  def ids[A](query: A)(implicit ev$1: A => DBObject): List[ID]
 
   /**
    * Queries for an object in this collection.
@@ -106,7 +106,7 @@ trait BaseDAOMethods[ObjectType <: AnyRef, ID <: Any] {
    *  @tparam A type view bound to DBObject
    *  @return a typed cursor to iterate over results
    */
-  def find[A <% DBObject](ref: A): SalatMongoCursor[ObjectType] = find(ref = ref, keys = MongoDBObject.empty, rp = defaultReadPreference)
+  def find[A](ref: A)(implicit ev$1: A => DBObject): SalatMongoCursor[ObjectType] = find(ref = ref, keys = MongoDBObject.empty, rp = defaultReadPreference)
 
   /**
    * Queries for an object in this collection.
@@ -117,7 +117,7 @@ trait BaseDAOMethods[ObjectType <: AnyRef, ID <: Any] {
    *  @tparam B type view bound to DBObject
    *  @return a typed cursor to iterate over results
    */
-  def find[A <% DBObject, B <% DBObject](ref: A, keys: B): SalatMongoCursor[ObjectType] = find(ref = ref, keys = keys, rp = defaultReadPreference)
+  def find[A, B](ref: A, keys: B): SalatMongoCursor[ObjectType] = find(ref = ref, keys = keys, rp = defaultReadPreference)
 
   /**
    * Queries for an object in this collection.
@@ -129,7 +129,7 @@ trait BaseDAOMethods[ObjectType <: AnyRef, ID <: Any] {
    *  @tparam B type view bound to DBObject
    *  @return a typed cursor to iterate over results
    */
-  def find[A <% DBObject, B <% DBObject](ref: A, keys: B, rp: ReadPreference): SalatMongoCursor[ObjectType]
+  def find[A, B](ref: A, keys: B, rp: ReadPreference): SalatMongoCursor[ObjectType]
 
   /**
    * Returns a single object from this collection.
@@ -138,7 +138,7 @@ trait BaseDAOMethods[ObjectType <: AnyRef, ID <: Any] {
    *  @tparam A type view bound to DBObject
    *  @return (Option[ObjectType]) Some() of the object found, or <code>None</code> if no such object exists
    */
-  def findOne[A <% DBObject](t: A): Option[ObjectType] = findOne(t, defaultReadPreference)
+  def findOne[A](t: A)(implicit ev$1: A => DBObject): Option[ObjectType] = findOne(t, defaultReadPreference)
 
   /**
    * Returns a single object from this collection.
@@ -148,7 +148,7 @@ trait BaseDAOMethods[ObjectType <: AnyRef, ID <: Any] {
    *  @tparam A type view bound to DBObject
    *  @return (Option[ObjectType]) Some() of the object found, or <code>None</code> if no such object exists
    */
-  def findOne[A <% DBObject](t: A, rp: ReadPreference): Option[ObjectType]
+  def findOne[A](t: A, rp: ReadPreference)(implicit ev$1: A => DBObject): Option[ObjectType]
 
   /**
    * Find an object by its ID.
@@ -218,7 +218,7 @@ trait BaseDAOMethods[ObjectType <: AnyRef, ID <: Any] {
    * @param t object with which to modify <tt>q</tt>
    *  @return (Option[ObjectType]) Some() of the object found (before, or after, the update)
    */
-  def findAndModify[A <% DBObject](q: A, t: ObjectType): Option[ObjectType]
+  def findAndModify[A](q: A, t: ObjectType)(implicit ev$1: A => DBObject): Option[ObjectType]
 
   /**
    * Finds the first document in the query (sorted) and updates it.
@@ -228,7 +228,7 @@ trait BaseDAOMethods[ObjectType <: AnyRef, ID <: Any] {
    * @param t object with which to modify <tt>q</tt>
    * @return (Option[ObjectType]) Some() of the old document, or <code>None</code> if no such object exists
    */
-  def findAndModify[A <% DBObject, B <% DBObject](q: A, sort: B, t: ObjectType): Option[ObjectType]
+  def findAndModify[A, B](q: A, sort: B, t: ObjectType): Option[ObjectType]
 
   /**
    * Remove a matching object from the collection
@@ -255,7 +255,7 @@ trait BaseDAOMethods[ObjectType <: AnyRef, ID <: Any] {
    *  @param q the object that documents to be removed must match
    *  @return (WriteResult) result of write operation
    */
-  def remove[A <% DBObject](q: A): WriteResult = {
+  def remove[A](q: A)(implicit ev$1: A => DBObject): WriteResult = {
     remove(q = q, wc = defaultWriteConcern)
   }
 
@@ -266,7 +266,7 @@ trait BaseDAOMethods[ObjectType <: AnyRef, ID <: Any] {
    *  @param wc write concern
    *  @return (WriteResult) result of write operation
    */
-  def remove[A <% DBObject](q: A, wc: WriteConcern): WriteResult
+  def remove[A](q: A, wc: WriteConcern)(implicit ev$1: A => DBObject): WriteResult
 
   /**
    * Remove document identified by this ID.

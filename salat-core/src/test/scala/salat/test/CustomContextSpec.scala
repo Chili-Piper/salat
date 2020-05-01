@@ -158,8 +158,8 @@
 //        val w = Walrus(Seq("a", "b", "C"))
 //        val dbo: MongoDBObject = grater[Walrus[String]].asDBObject(w)
 //        dbo.get("manyThings") must beSome[AnyRef]
-//        val w_* = grater[Walrus[String]].asObject(dbo)
-//        w_* must_== w
+//        val w_ = grater[Walrus[String]].asObject(dbo)
+//        w_ must_== w
 //
 //        // we can resolve a class from the custom classloader
 //        getClassNamed(TestClassName) must beSome(testClassForName)
@@ -188,8 +188,8 @@
 //      dbo must havePair(swamp, 3.14)
 //      dbo must not have key(lake)
 //
-//      val i_* = grater[Ida].asObject(dbo)
-//      i_* must_== i
+//      val i_ = grater[Ida].asObject(dbo)
+//      i_ must_== i
 //    }
 //
 //    "allow registering a per-class key override" in {

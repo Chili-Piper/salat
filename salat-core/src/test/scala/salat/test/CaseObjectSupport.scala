@@ -57,8 +57,8 @@ class CaseObjectSupport extends SalatSpec {
       "be able to deserialize case objects" in {
         val mine = Wardrobe(suits = List(WhatArmstrongWore, Zoot))
         val dbo = grater[Wardrobe].asDBObject(mine)
-        val mine_* = grater[Wardrobe].asObject(dbo)
-        mine must_== mine_*
+        val mine_ = grater[Wardrobe].asObject(dbo)
+        mine must_== mine_
       }
 
       // TODO: list of case objects
@@ -67,7 +67,7 @@ class CaseObjectSupport extends SalatSpec {
         val u = SlippedDownADrain
         val dbo: MongoDBObject = grater[Una].asDBObject(u)
         dbo must havePair("_typeHint" -> "salat.test.model.SlippedDownADrain$")
-        val u_* = grater[Una].asObject(dbo)
+        val u_ = grater[Una].asObject(dbo)
         u must_== u
       }
     }

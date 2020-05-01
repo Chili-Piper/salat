@@ -47,8 +47,8 @@ class DateTimeSpec extends SalatSpec {
 
       val coll = MongoConnection()(SalatSpecDb)("scala_date_test_1")
       val wr = coll.insert(dbo)
-      val n_* = grater[Neville].asObject(coll.findOne().get)
-      n_* must_== n
+      val n_ = grater[Neville].asObject(coll.findOne().get)
+      n_ must_== n
     }
 
     "support org.scala_tools.time.TypeImports.LocalDateTime" in {
@@ -61,8 +61,8 @@ class DateTimeSpec extends SalatSpec {
 
       val coll = MongoConnection()(SalatSpecDb)("scala_date_test_2")
       val wr = coll.insert(dbo)
-      val v_* = grater[Victor].asObject(coll.findOne().get)
-      v_* must_== v
+      val v_ = grater[Victor].asObject(coll.findOne().get)
+      v_ must_== v
     }
 
     "support org.joda.time.DateTime" in {
@@ -76,8 +76,8 @@ class DateTimeSpec extends SalatSpec {
 
       val coll = MongoConnection()(SalatSpecDb)("scala_date_test_3")
       val wr = coll.insert(dbo)
-      val n_* = grater[Neville].asObject(coll.findOne().get)
-      n_* must_== n
+      val n_ = grater[Neville].asObject(coll.findOne().get)
+      n_ must_== n
     }
 
     "support org.joda.time.LocalDateTime" in {
@@ -90,16 +90,16 @@ class DateTimeSpec extends SalatSpec {
 
       val coll = MongoConnection()(SalatSpecDb)("scala_date_test_4")
       val wr = coll.insert(dbo)
-      val v_* = grater[Victor].asObject(coll.findOne().get)
-      v_* must_== v
+      val v_ = grater[Victor].asObject(coll.findOne().get)
+      v_ must_== v
     }
 
     "support dates parsed from JSON" in {
       val n = Neville(asOf = new org.joda.time.DateMidnight().toDateTime)
       val json = grater[Neville].asDBObject(n).toString
       //      log.info(json)
-      val n_* = grater[Neville].asObject(parse(json).asInstanceOf[DBObject])
-      n_* must_== n
+      val n_ = grater[Neville].asObject(parse(json).asInstanceOf[DBObject])
+      n_ must_== n
     }
 
   }

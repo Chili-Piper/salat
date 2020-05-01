@@ -54,9 +54,9 @@ class BigIntSpec extends SalatSpec {
       val wr = coll.insert(dbo)
       //      println("WR: %s".format(wr))
 
-      val l_* = grater[Leo].asObject(coll.findOne().get)
-      //      println(MapPrettyPrinter(l_*))
-      l_* must_== l
+      val l_ = grater[Leo].asObject(coll.findOne().get)
+      //      println(MapPrettyPrinter(l_))
+      l_ must_== l
     }
   }
 }

@@ -36,7 +36,7 @@ class ProxyGrater[X <: AnyRef](clazz: Class[X])(implicit ctx: Context) extends G
   def asDBObject(o: X): DBObject =
     ctx.lookup(o.getClass.getName).asInstanceOf[Grater[X]].asDBObject(o)
 
-  def asObject[A <% MongoDBObject](dbo: A): X = {
+  def asObject[A](dbo: A)(implicit ev$1: A => MongoDBObject): X = {
     log.trace("ProxyGrater.asObject: typeHint='%s'".format(ctx.extractTypeHint(dbo).getOrElse("")))
     ctx.lookup(dbo).asInstanceOf[Grater[X]].asObject(dbo)
   }

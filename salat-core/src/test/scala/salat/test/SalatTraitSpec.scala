@@ -62,8 +62,8 @@ class SalatTraitSpec extends SalatSpec {
         listBuilder.result
       })
 
-      val container_* = grater[SomeContainerClass].asObject(dbo)
-      container_* must_== container
+      val container_ = grater[SomeContainerClass].asObject(dbo)
+      container_ must_== container
     }
 
     "handle a collection of concrete instances of an abstract class annotated with @Salat" in {
@@ -110,8 +110,8 @@ class SalatTraitSpec extends SalatSpec {
         listBuilder.result
       })
 
-      val container_* = grater[VertebrateList].asObject(dbo)
-      container_* must_== container
+      val container_ = grater[VertebrateList].asObject(dbo)
+      container_ must_== container
     }
 
     "properly deserialize a raw DBObject containing concrete instances of a trait annotated with @Salat" in {
@@ -138,7 +138,7 @@ class SalatTraitSpec extends SalatSpec {
 
       val dbo = containerClassBuilder.result
 
-      val obj_* = grater[SomeContainerClass].asObject(dbo)
+      val obj_ = grater[SomeContainerClass].asObject(dbo)
 
       val obj = SomeContainerClass(
         "some value for e",
@@ -148,7 +148,7 @@ class SalatTraitSpec extends SalatSpec {
         )
       )
 
-      obj_* must_== obj
+      obj_ must_== obj
     }
   }
 

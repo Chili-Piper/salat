@@ -45,12 +45,12 @@ class IgnoreAnnotationSpec extends SalatSpec {
       dbo must havePair("_typeHint" -> "salat.test.model.Titus")
       dbo must havePair("dontIgnoreMe" -> -999)
       dbo.getAs[String]("ignoreMe") must beNone
-      val t_* = grater[Titus].asObject(dbo)
+      val t_ = grater[Titus].asObject(dbo)
       // because of @Ignore, the supplied value "look" is discarded on serialization 
       // on deserialization, ignoreMe field is populated with default value "bits"
-      t_* must_== t.copy(ignoreMe = "bits")
+      t_ must_== t.copy(ignoreMe = "bits")
       val ignoreMeDefaultValue = classOf[Titus].companionClass.getMethod("apply$default$1").invoke(classOf[Titus].companionObject)
-      t_*.ignoreMe must_== ignoreMeDefaultValue
+      t_.ignoreMe must_== ignoreMeDefaultValue
     }
 
     "allow a null default value" in {
@@ -60,11 +60,11 @@ class IgnoreAnnotationSpec extends SalatSpec {
       dbo must havePair("_typeHint" -> "salat.test.model.Titus2")
       dbo must havePair("dontIgnoreMe" -> -999)
       dbo.getAs[String]("ignoreMe") must beNone
-      val t_* = grater[Titus2].asObject(dbo)
+      val t_ = grater[Titus2].asObject(dbo)
       // because of @Ignore, the supplied value "look" is discarded on serialization
       // on deserialization, ignoreMe field is populated with default value null
-      t_* must_== t.copy(ignoreMe = null)
-      t_*.ignoreMe must_== classOf[Titus2].companionClass.getMethod("apply$default$1").invoke(classOf[Titus2].companionObject)
+      t_ must_== t.copy(ignoreMe = null)
+      t_.ignoreMe must_== classOf[Titus2].companionClass.getMethod("apply$default$1").invoke(classOf[Titus2].companionObject)
     }
 
     "ignore a field with an unsupported type annotated with @Ignore" in {
@@ -76,9 +76,9 @@ class IgnoreAnnotationSpec extends SalatSpec {
       dbo must havePair("_id" -> _id)
       dbo.getAs[String]("text") must beNone
       dbo.getAs[java.io.File]("unsupportedType") must beNone
-      val s_* = grater[SomeClassWithUnsupportedField].asObject(dbo)
-      s_* must_== s.copy(unsupportedType = null)
-      s_*.unsupportedType must_== classOf[SomeClassWithUnsupportedField].companionClass.getMethod("apply$default$3").
+      val s_ = grater[SomeClassWithUnsupportedField].asObject(dbo)
+      s_ must_== s.copy(unsupportedType = null)
+      s_.unsupportedType must_== classOf[SomeClassWithUnsupportedField].companionClass.getMethod("apply$default$3").
         invoke(classOf[SomeClassWithUnsupportedField].companionObject)
     }
 
@@ -104,9 +104,9 @@ class IgnoreAnnotationSpec extends SalatSpec {
       dbo must havePair("thingy" -> 9)
       dbo must havePair("created" -> now)
       dbo must havePair("updated" -> now)
-      val s_* = grater[SomeClassWithUnsupportedField2].asObject(dbo)
-      s_* must_== s.copy(cascade = Map.empty)
-      s_*.cascade must_== classOf[SomeClassWithUnsupportedField2].companionClass.getMethod("apply$default$4").invoke(classOf[SomeClassWithUnsupportedField2].companionObject)
+      val s_ = grater[SomeClassWithUnsupportedField2].asObject(dbo)
+      s_ must_== s.copy(cascade = Map.empty)
+      s_.cascade must_== classOf[SomeClassWithUnsupportedField2].companionClass.getMethod("apply$default$4").invoke(classOf[SomeClassWithUnsupportedField2].companionObject)
     }
 
   }

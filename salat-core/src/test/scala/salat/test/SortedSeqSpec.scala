@@ -48,8 +48,8 @@ class SortedSeqSpec extends SalatSpec {
         val dbo: MongoDBObject = grater[Walrus[String]].asDBObject(walrus)
         dbo.get("manyThings") must beSome[AnyRef]
 
-        val walrus_* = grater[Walrus[String]].asObject(dbo)
-        walrus_*.manyThings must_== expectedOrder
+        val walrus_ = grater[Walrus[String]].asObject(dbo)
+        walrus_.manyThings must_== expectedOrder
       }
 
       "handle sorted sequences" in {
@@ -69,11 +69,11 @@ class SortedSeqSpec extends SalatSpec {
         val dbo: MongoDBObject = grater[Walrus[Walrus[String]]].asDBObject(herd)
         dbo.get("manyThings") must beSome[AnyRef]
 
-        val herd_* = grater[Walrus[Walrus[String]]].asObject(dbo)
-        herd_*.manyThings must_== expectedHerd
-        herd_*.manyThings(0).manyThings must_== expectedOrder2
-        herd_*.manyThings(1).manyThings must_== expectedOrder3
-        herd_*.manyThings(2).manyThings must_== expectedOrder
+        val herd_ = grater[Walrus[Walrus[String]]].asObject(dbo)
+        herd_.manyThings must_== expectedHerd
+        herd_.manyThings(0).manyThings must_== expectedOrder2
+        herd_.manyThings(1).manyThings must_== expectedOrder3
+        herd_.manyThings(2).manyThings must_== expectedOrder
       }
     }
   }

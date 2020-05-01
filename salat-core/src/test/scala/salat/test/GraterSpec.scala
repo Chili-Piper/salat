@@ -63,8 +63,8 @@ class GraterSpec extends SalatSpec {
         map must havePair("g" -> g)
         map must havePair("h" -> h)
         map must havePair("i" -> i)
-        val aural_* = grater[Aural].fromMap(map)
-        aural_* must_== aural
+        val aural_ = grater[Aural].fromMap(map)
+        aural_ must_== aural
       }
       "concrete trait impl <-> map" in {
         val ctenoid = Ctenoid(a = a, b = b, c = c)
@@ -73,8 +73,8 @@ class GraterSpec extends SalatSpec {
         map must havePair("a" -> a)
         map must havePair("b" -> b)
         map must havePair("c" -> c)
-        val ctenoid_* = grater[Bdellatomy].fromMap(map)
-        ctenoid_* must_== ctenoid
+        val ctenoid_ = grater[Bdellatomy].fromMap(map)
+        ctenoid_ must_== ctenoid
       }
 
       "handle default args when serializing case class -> map" in {
@@ -91,15 +91,15 @@ class GraterSpec extends SalatSpec {
         map must havePair("a" -> defaultArgA)
         map must havePair("b" -> defaultArgB)
         map must havePair("c" -> GoldenRatio)
-        val djinn_* = grater[Djinn].fromMap(map)
-        djinn_* must_== djinn
+        val djinn_ = grater[Djinn].fromMap(map)
+        djinn_ must_== djinn
       }
 
       "handle default args when serializing map -> case class" in {
         val map = Map("_id" -> _id, "b" -> 99, "c" -> GoldenRatio)
-        val djinn_* = grater[Djinn].fromMap(map)
-        djinn_*.a must_== TestString
-        djinn_* must_== Djinn(_id = _id, b = 99, c = GoldenRatio)
+        val djinn_ = grater[Djinn].fromMap(map)
+        djinn_.a must_== TestString
+        djinn_ must_== Djinn(_id = _id, b = 99, c = GoldenRatio)
       }
 
       "respect @Key when serializing case class -> map" in {
@@ -107,8 +107,8 @@ class GraterSpec extends SalatSpec {
         val map = grater[Ewe].toMap(ewe)
         map must havePair(ctx.typeHintStrategy.typeHint -> "salat.test.model.Ewe")
         map must havePair("fluffy" -> true)
-        val ewe_* = grater[Ewe].fromMap(map)
-        ewe_* must_== ewe
+        val ewe_ = grater[Ewe].fromMap(map)
+        ewe_ must_== ewe
       }
 
       "respect @Key when serializing case class <- map" in {
@@ -122,18 +122,18 @@ class GraterSpec extends SalatSpec {
         map must havePair("_id" -> _id)
         map must havePair("which" -> "spectre")
         map must haveKey("rationalExplanation").not // TODO: for some reason, not haveKey is unhappy here
-        val fantasm_* = grater[Fantasm].fromMap(map)
+        val fantasm_ = grater[Fantasm].fromMap(map)
         // because rationalExplanation is annotated with @Ignore, value in fantasm is not serialized to map and doesn't
-        // appear in the deserialized fantasm_* object
-        fantasm_* must_== fantasm.copy(rationalExplanation = None)
+        // appear in the deserialized fantasm_ object
+        fantasm_ must_== fantasm.copy(rationalExplanation = None)
       }
 
       "respect @Ignore when serializing case class <- map" in {
         val map = Map("_id" -> _id, "which" -> "spectre", "rationalExplanation" -> Some("just a passing breeze"))
-        val fantasm_* = grater[Fantasm].fromMap(map)
+        val fantasm_ = grater[Fantasm].fromMap(map)
         // because rationalExplanation is annotated with @Ignore, value in map doesn't appear in the deserialized
-        // fantasm_* object
-        fantasm_* must_== Fantasm(_id = _id, which = "spectre", rationalExplanation = None)
+        // fantasm_ object
+        fantasm_ must_== Fantasm(_id = _id, which = "spectre", rationalExplanation = None)
       }
 
       "respect @Persist when serializing case class -> map" in {
@@ -143,14 +143,14 @@ class GraterSpec extends SalatSpec {
         map must havePair(ctx.typeHintStrategy.typeHint -> "salat.test.model.Gneiss")
         map must havePair("igneous" -> true)
         map must havePair("classification" -> "orthogneiss")
-        val gneiss_* = grater[Gneiss].fromMap(map)
-        gneiss_* must_== gneiss
+        val gneiss_ = grater[Gneiss].fromMap(map)
+        gneiss_ must_== gneiss
       }
 
       "respect @Persist when serializing case class <- map" in {
         val map = Map("igneous" -> true, "classification" -> "orthogneiss")
-        val gneiss_* = grater[Gneiss].fromMap(map)
-        gneiss_* must_== Gneiss(true)
+        val gneiss_ = grater[Gneiss].fromMap(map)
+        gneiss_ must_== Gneiss(true)
       }
 
       "support case classes in package objects" in {

@@ -298,6 +298,8 @@ package in {
   import org.joda.time.{DateTime, DateTimeZone, LocalDateTime}
   import org.json4s.JsonAST.JArray
 
+  import scala.collection.immutable.ArraySeq
+
   /** Issue #148 Don't allow silent loss of precision for bad data. */
   private object conversions {
     def narrow_!(value: Any, converted: Int): Int =
@@ -319,10 +321,10 @@ package in {
   object UtilsInjector {
     def toObject(value: Any)(implicit ctx: Context): Any = value match {
       case y: BasicDBObject if ctx.extractTypeHint(y).isDefined => ctx.lookup(y).asObject(y)
-      case y: BasicDBObject => y.mapValues(toObject(_)).toMap
+      case y: BasicDBObject => y.view.mapValues(toObject(_)).toMap
       case y: BasicDBList => y.map(toObject(_)).toList
-      case x: scala.collection.Map[_, _] => x.mapValues(toObject(_))
-      case x: scala.collection.Traversable[_] => x.map(toObject(_))
+      case x: scala.collection.Map[_, _] => x.view.mapValues(toObject(_))
+      case x: scala.collection.Iterable[_] => x.map(toObject(_))
       case Some(x) => Some(toObject(x))
       case _ => value
     }
@@ -506,10 +508,10 @@ package in {
   trait BinaryInjector extends Transformer with Logging {
     self: Transformer =>
     override def after(value: Any)(implicit ctx: Context): Option[Any] = value match {
-      case c: Array[Byte] => {
-        val seq: Seq[Byte] = c
+      case c: Array[Byte] =>
+        val seq: Seq[Byte] = c  // ArraySeq.unsafeWrapArray(c)
         Some(seq)
-      }
+
       case _ => None
     }
   }

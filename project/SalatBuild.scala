@@ -27,13 +27,11 @@ object BuildSettings {
 
   import Repos._
 
-  val buildOrganization = "com.github.salat"
-  val buildVersion = "1.11.3-SNAPSHOT"
+  val buildOrganization = "com.chilipiper"
   val buildScalaVersion = "2.13.2"
 
   val buildSettings = Defaults.coreDefaultSettings ++ Seq(
     organization := buildOrganization,
-    version := buildVersion,
     scalaVersion := buildScalaVersion,
     parallelExecution in Test := false,
     testFrameworks += TestFrameworks.Specs2,
@@ -47,9 +45,13 @@ object BuildSettings {
 object Dependencies {
 
   private val LogbackVersion = "1.1.8"
-  private val CasbahVersion = "4.0.0-RC0"
+  private val CasbahVersion = "4.0.0-RC1-SNAPSHOT"
 
-  val specs2 = "org.specs2" %% "specs2-core" % "4.9.4" % "test"
+  private val Specs2Version = "4.9.4"
+  val specs2 = "org.specs2" %% "specs2-core" % Specs2Version % "test"
+  val specs2junit = "org.specs2" %% "specs2-junit" % Specs2Version % "test"
+  val specs2matchers = "org.specs2" %% "specs2-matcher-extra" % Specs2Version % "test"
+
   val commonsLang = "commons-lang" % "commons-lang" % "2.6" % "test"
   val slf4jApi = "org.slf4j" % "slf4j-api" % "1.7.21"
   val logbackCore = "ch.qos.logback" % "logback-core" % LogbackVersion % "test"

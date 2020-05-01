@@ -104,11 +104,11 @@ class PolymorphicSalatDAOSpec extends SalatSpec {
       UserDAO.collection.count() must_== 1L
       RoleDAO.collection.count() must_== 2L
 
-      val user_* = UserDAO.findOneById(userId)
-      user_* must beSome(user)
+      val user_ = UserDAO.findOneById(userId)
+      user_ must beSome(user)
 
-      val roles_* = UserDAO.roles.findByParentId(userId).toList
-      roles_* must contain(exactly(author, editor))
+      val roles_ = UserDAO.roles.findByParentId(userId).toList
+      roles_ must contain(exactly(author, editor))
     }
   }
 

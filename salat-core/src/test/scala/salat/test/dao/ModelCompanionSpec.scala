@@ -56,8 +56,8 @@ class ModelCompanionSpec extends SalatSpec {
 
       "toObject" in new myModelScope {
         val dbo = MyModel.toDBObject(m)
-        val m_* = MyModel.toObject(dbo)
-        m_* must_== m
+        val m_ = MyModel.toObject(dbo)
+        m_ must_== m
       }
 
       "toPrettyJson" in new myModelScope {
@@ -100,19 +100,19 @@ class ModelCompanionSpec extends SalatSpec {
 
       "save" in new myModelScope {
         MyModel.insert(m) must beSome(_id)
-        val z_* : List[Double] = 0d :: z
-        MyModel.save(m.copy(z = z_*))
-        val m_* = MyModel.findOneById(_id)
-        m_*.map(_.z).getOrElse(List.empty[Double]) must_== z_*
+        val z_ : List[Double] = 0d :: z
+        MyModel.save(m.copy(z = z_))
+        val m_ = MyModel.findOneById(_id)
+        m_.map(_.z).getOrElse(List.empty[Double]) must_== z_
       }
 
       "update" in new myModelScope {
         MyModel.insert(m) must beSome(_id)
-        val x_* = "cold stone lamping" // this spec is brought to you by the Jurassic 5
+        val x_ = "cold stone lamping" // this spec is brought to you by the Jurassic 5
         val q = MongoDBObject("_id" -> _id)
-        val o = MongoDBObject("$set" -> MongoDBObject("x" -> x_*))
+        val o = MongoDBObject("$set" -> MongoDBObject("x" -> x_))
         MyModel.update(q = q, o = o, upsert = false, multi = false, wc = MyModel.dao.collection.writeConcern)
-        MyModel.findOneById(_id) must beSome(m.copy(x = x_*))
+        MyModel.findOneById(_id) must beSome(m.copy(x = x_))
       }
 
       "remove" in new myModelScope {

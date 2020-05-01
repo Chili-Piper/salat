@@ -28,13 +28,14 @@
 package salat
 
 import scala.collection.immutable.{IndexedSeq => IIndexedSeq, List => IList, Map => IMap, Seq => ISeq, Set => ISet}
-import scala.collection.mutable.{ArrayBuffer, Buffer, DoubleLinkedList, IndexedSeq => MIndexedSeq, LinkedList, Map => MMap, Seq => MSeq, Set => MSet}
+import scala.collection.mutable
+import scala.collection.mutable.{ArrayBuffer, Buffer, ListBuffer, IndexedSeq => MIndexedSeq, Map => MMap, Seq => MSeq, Set => MSet}
 import scala.tools.scalap.scalax.rules.scalasig._
 
 package object impls {
-  def traversableImpl(name: String, real: collection.Traversable[_]): scala.collection.Traversable[_] = name match {
+  def traversableImpl(name: String, real: collection.Iterable[_]): scala.collection.Iterable[_] = name match {
 
-    case ImplClasses.BufferClass      => Buffer.empty ++ real
+    case ImplClasses.BufferClass      => mutable.Buffer.empty ++ real
     case ImplClasses.ArrayBufferClass => ArrayBuffer.empty ++ real
 
     case ImplClasses.SeqClass         => Seq.empty ++ real
@@ -53,13 +54,12 @@ package object impls {
     case ImplClasses.IIndexedSeq      => IIndexedSeq.empty ++ real
     case ImplClasses.MIndexedSeq      => MIndexedSeq.empty ++ real
 
-    case ImplClasses.LinkedList       => LinkedList.empty ++ real
-    case ImplClasses.DoubleLinkedList => DoubleLinkedList.empty ++ real
+    case ImplClasses.ListBuffer       => ListBuffer.empty ++ real
 
-    case x                            => sys.error("failed to find proper Traversable[_] impl for %s".format(x))
+    case x                            => sys.error("failed to find proper Iterable[_] impl for %s".format(x))
   }
 
-  def traversableImpl(t: Type, real: scala.collection.Traversable[_]): scala.collection.Traversable[_] =
+  def traversableImpl(t: Type, real: collection.Iterable[_]): collection.Iterable[_] =
     t match {
       case TypeRefType(_, symbol, _) => symbol.path match {
         case "scala.package.Seq"        => traversableImpl(ImplClasses.SeqClass, real)
@@ -71,7 +71,7 @@ package object impls {
       }
     }
 
-  def mapImpl(name: String, real: scala.collection.Map[_, _]): scala.collection.Map[_, _] = name match {
+  def mapImpl(name: String, real: collection.Map[_, _]): collection.Map[_, _] = name match {
     case ImplClasses.MapClass  => Map.empty ++ real
     case ImplClasses.IMapClass => IMap.empty ++ real
     case ImplClasses.MMapClass => MMap.empty ++ real
@@ -114,8 +114,7 @@ package impls {
     val IIndexedSeq = classOf[IIndexedSeq[_]].getName
     val MIndexedSeq = classOf[MIndexedSeq[_]].getName
 
-    val LinkedList = classOf[LinkedList[_]].getName
-    val DoubleLinkedList = classOf[DoubleLinkedList[_]].getName
+    val ListBuffer = classOf[ListBuffer[_]].getName
   }
 
 }

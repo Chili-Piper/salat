@@ -47,8 +47,8 @@ class DateTimeZoneSpec extends SalatSpec {
 
       val coll = MongoConnection()(SalatSpecDb)("scala_timezone_test_1")
       val wr = coll.insert(dbo)
-      val n_* = grater[Prue].asObject(coll.findOne().get)
-      n_* must_== n
+      val n_ = grater[Prue].asObject(coll.findOne().get)
+      n_ must_== n
     }
 
     "support org.joda.time.DateTimeZone" in {
@@ -62,16 +62,16 @@ class DateTimeZoneSpec extends SalatSpec {
 
       val coll = MongoConnection()(SalatSpecDb)("scala_timezone_test_2")
       val wr = coll.insert(dbo)
-      val n_* = grater[Prue].asObject(coll.findOne().get)
-      n_* must_== n
+      val n_ = grater[Prue].asObject(coll.findOne().get)
+      n_ must_== n
     }
 
     "support timezones parsed from JSON" in {
       val n = Prue(zone = org.joda.time.DateTimeZone.forID("Europe/London"))
       val json = grater[Prue].asDBObject(n).toString
       //      log.info(json)
-      val n_* = grater[Prue].asObject(parse(json).asInstanceOf[DBObject])
-      n_* must_== n
+      val n_ = grater[Prue].asObject(parse(json).asInstanceOf[DBObject])
+      n_ must_== n
     }
 
   }

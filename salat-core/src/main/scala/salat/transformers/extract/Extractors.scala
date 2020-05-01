@@ -209,7 +209,7 @@ package out {
       case x: BasicDBObject                   => map2DBObject(x)
       case x: BasicDBList                     => list2DBList(x)
       case x: scala.collection.Map[_, _]      => map2DBObject(x)
-      case x: scala.collection.Traversable[_] => list2DBList(x)
+      case x: scala.collection.Iterable[_] => list2DBList(x)
       case Some(x)                            => Some(toDBObject(x))
       case y: AnyRef if ctx.lookup_?(Some(y.getClass.getCanonicalName).getOrElse(y.getClass.getName)).isDefined =>
         grater[y.type].asDBObject(y)
@@ -226,7 +226,7 @@ package out {
       builder.result()
     }
 
-    private def list2DBList(x: scala.collection.Traversable[_])(implicit cxt: Context) = {
+    private def list2DBList(x: scala.collection.Iterable[_])(implicit cxt: Context) = {
       MongoDBList(x.map(toDBObject(_)).toList: _*)
     }
   }
@@ -299,7 +299,7 @@ package out {
     protected def transformElem(el: Any) = super.transform(el)
 
     override def after(value: Any)(implicit ctx: Context): Option[Any] = value match {
-      case traversable: Traversable[_] =>
+      case traversable: Iterable[_] =>
         Some(MongoDBList(traversable.map(transformElem).map(UtilsExtractor.toDBObject).toList: _*))
       case _ => None
     }

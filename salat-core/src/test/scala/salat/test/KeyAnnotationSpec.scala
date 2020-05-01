@@ -44,8 +44,8 @@ class KeyAnnotationSpec extends SalatSpec {
       dbo must havePair("cyanide" -> "peach pits")
       dbo must havePair("byMistake" -> true)
 
-      val j_* = grater[James2].asObject(dbo)
-      j_* must_== j
+      val j_ = grater[James2].asObject(dbo)
+      j_ must_== j
     }
 
     "override a field name when used in a trait" in {
@@ -55,8 +55,8 @@ class KeyAnnotationSpec extends SalatSpec {
       dbo must havePair("arsenic" -> "old lace")
       dbo must havePair("byMistake" -> false)
 
-      val j_* = grater[James3].asObject(dbo)
-      j_* must_== j
+      val j_ = grater[James3].asObject(dbo)
+      j_ must_== j
     }
 
     "override a field name when used in an abstract superclass" in {
@@ -66,8 +66,8 @@ class KeyAnnotationSpec extends SalatSpec {
       dbo must havePair("mercury" -> "mad as a hatter")
       dbo must havePair("byMistake" -> true)
 
-      val j_* = grater[James4].asObject(dbo)
-      j_* must_== j
+      val j_ = grater[James4].asObject(dbo)
+      j_ must_== j
     }
 
     "work with a field whose type is handled by a custom BSON encoding hook" in {
@@ -96,11 +96,11 @@ class KeyAnnotationSpec extends SalatSpec {
       val wr = coll.insert(dbo)
       //      log.info("WR: %s", wr)
 
-      val dbo_* : MongoDBObject = coll.findOne().get
-      //      log.info(MapPrettyPrinter(dbo_*))
-      val p_* = grater[Page].asObject(dbo_*)
+      val dbo_ : MongoDBObject = coll.findOne().get
+      //      log.info(MapPrettyPrinter(dbo_))
+      val p_ = grater[Page].asObject(dbo_)
       salat.test.util.DeregisterURIConversionHelpers()
-      p_* must_== p // our custom BSON encoding for URI is crunk e pur si muove
+      p_ must_== p // our custom BSON encoding for URI is crunk e pur si muove
     }
   }
 

@@ -103,7 +103,7 @@ protected[salat] object TypeMatchers {
 
   def matches(t: TypeRefType, name: String) = t.symbol.path == name
 
-  def matches(t: TypeRefType, names: Traversable[String]) = names.exists(t.symbol.path == _)
+  def matches(t: TypeRefType, names: Iterable[String]) = names.exists(t.symbol.path == _)
 
   def matchesMap(t: Type) = t match {
     case TypeRefType(_, symbol, k :: v :: Nil) if Types.isMap(symbol) => Some(k -> v)

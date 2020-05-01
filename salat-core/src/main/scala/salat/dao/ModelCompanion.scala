@@ -117,19 +117,19 @@ trait ModelCompanion[ObjectType <: AnyRef, ID <: Any] extends BaseDAOMethods[Obj
    * @param t collection to be serialized
    *  @return collection of model objects serialized as a JSON array of `JObject`
    */
-  def toJSONArray(t: Traversable[ObjectType]) = dao._grater.toJSONArray(t)
+  def toJSONArray(t: Iterable[ObjectType]) = dao._grater.toJSONArray(t)
 
   /**
    * @param t collection to be serialized
    *  @return collection of model objects serialized to a JSON array and rendered as pretty JSON
    */
-  def toPrettyJSONArray(t: Traversable[ObjectType]) = dao._grater.toPrettyJSONArray(t)
+  def toPrettyJSONArray(t: Iterable[ObjectType]) = dao._grater.toPrettyJSONArray(t)
 
   /**
    * @param t collection to be serialized
    *  @return collection of model objects serialized to a JSON array and rendered as compact JSON
    */
-  def toCompactJSONArray(t: Traversable[ObjectType]) = dao._grater.toCompactJSONArray(t)
+  def toCompactJSONArray(t: Iterable[ObjectType]) = dao._grater.toCompactJSONArray(t)
 
   /**
    * @param j `JObject` to be deserialized
@@ -191,7 +191,7 @@ trait ModelCompanion[ObjectType <: AnyRef, ID <: Any] extends BaseDAOMethods[Obj
    *  @tparam B type view bound to DBObject
    *  @return a typed cursor to iterate over results
    */
-  def find[A <% DBObject, B <% DBObject](ref: A, keys: B, rp: ReadPreference = defaultReadPreference) = dao.find(ref, keys, rp)
+  def find[A, B](ref: A, keys: B, rp: ReadPreference = defaultReadPreference) = dao.find(ref, keys, rp)
 
   /**
    * @param t object for which to search
@@ -199,7 +199,7 @@ trait ModelCompanion[ObjectType <: AnyRef, ID <: Any] extends BaseDAOMethods[Obj
    *  @param rp read preference to use for this search
    *  @return (Option[ObjectType]) Some() of the object found, or <code>None</code> if no such object exists
    */
-  def findOne[A <% DBObject](t: A, rp: ReadPreference = defaultReadPreference) = dao.findOne(t, rp)
+  def findOne[A](t: A, rp: ReadPreference = defaultReadPreference)(implicit ev$1: A => DBObject) = dao.findOne(t, rp)
 
   /**
    * @param id identifier
@@ -212,7 +212,7 @@ trait ModelCompanion[ObjectType <: AnyRef, ID <: Any] extends BaseDAOMethods[Obj
    *  @tparam A type view bound to DBObject
    *  @return list of IDs
    */
-  def ids[A <% DBObject](query: A) = dao.ids(query)
+  def ids[A](query: A)(implicit ev$1: A => DBObject) = dao.ids(query)
 
   /**
    * @param docs collection of `ObjectType` instances to insert
@@ -220,7 +220,7 @@ trait ModelCompanion[ObjectType <: AnyRef, ID <: Any] extends BaseDAOMethods[Obj
    *  @return list of object ids
    *         TODO: flatten list of IDs - why on earth didn't I do that in the first place?
    */
-  def insert(docs: Traversable[ObjectType], wc: WriteConcern) = dao.insert(docs, wc)
+  def insert(docs: Iterable[ObjectType], wc: WriteConcern) = dao.insert(docs, wc)
 
   /**
    * @param t instance of ObjectType
@@ -288,7 +288,7 @@ trait ModelCompanion[ObjectType <: AnyRef, ID <: Any] extends BaseDAOMethods[Obj
    *  @tparam A
    *  @return (WriteResult) result of write operation
    */
-  def remove[A <% DBObject](q: A, wc: WriteConcern) = {
+  def remove[A](q: A, wc: WriteConcern)(implicit ev$1: A => DBObject) = {
     dao.remove(q, wc)
   }
 
@@ -338,7 +338,7 @@ trait ModelCompanion[ObjectType <: AnyRef, ID <: Any] extends BaseDAOMethods[Obj
    * @param t object with which to modify <tt>q</tt>
    * @return (Option[ObjectType]) Some() of the object found (before, or after, the update)
    */
-  def findAndModify[A <% DBObject](q: A, t: ObjectType): Option[ObjectType] =
+  def findAndModify[A](q: A, t: ObjectType)(implicit ev$1: A => DBObject): Option[ObjectType] =
     dao.findAndModify(q, t)
 
   /**
@@ -349,7 +349,7 @@ trait ModelCompanion[ObjectType <: AnyRef, ID <: Any] extends BaseDAOMethods[Obj
    * @param t    object with which to modify <tt>q</tt>
    * @return (Option[ObjectType]) Some() of the old document, or <code>None</code> if no such object exists
    */
-  def findAndModify[A <% DBObject, B <% DBObject](q: A, sort: B, t: ObjectType): Option[ObjectType] =
+  def findAndModify[A, B](q: A, sort: B, t: ObjectType): Option[ObjectType] =
     dao.findAndModify(q, sort, t)
 
   //

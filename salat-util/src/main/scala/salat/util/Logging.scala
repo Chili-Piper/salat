@@ -70,87 +70,87 @@ protected[salat] class Logger(val logger: SLFLogger) {
   def error_? = logger.isErrorEnabled
 
   //Trace
-  def trace(t: Throwable, fmt: => String, arg: Any, argN: Any*) {
+  def trace(t: Throwable, fmt: => String, arg: Any, argN: Any*): Unit = {
     trace(t, message(fmt, arg, argN: _*))
   }
 
-  def trace(t: Throwable, msg: => String) {
+  def trace(t: Throwable, msg: => String): Unit = {
     if (trace_?) logger.trace(msg, t)
   }
 
-  def trace(fmt: => String, arg: Any, argN: Any*) {
+  def trace(fmt: => String, arg: Any, argN: Any*): Unit = {
     trace(message(fmt, arg, argN: _*))
   }
 
-  def trace(msg: => String) {
+  def trace(msg: => String): Unit = {
     if (trace_?) logger trace msg
   }
 
   //Debug
-  def debug(t: Throwable, fmt: => String, arg: Any, argN: Any*) {
+  def debug(t: Throwable, fmt: => String, arg: Any, argN: Any*): Unit = {
     debug(t, message(fmt, arg, argN: _*))
   }
 
-  def debug(t: Throwable, msg: => String) {
+  def debug(t: Throwable, msg: => String): Unit = {
     if (debug_?) logger.debug(msg, t)
   }
 
-  def debug(fmt: => String, arg: Any, argN: Any*) {
+  def debug(fmt: => String, arg: Any, argN: Any*): Unit = {
     debug(message(fmt, arg, argN: _*))
   }
 
-  def debug(msg: => String) {
+  def debug(msg: => String): Unit = {
     if (debug_?) logger debug msg
   }
 
   //Info
-  def info(t: Throwable, fmt: => String, arg: Any, argN: Any*) {
+  def info(t: Throwable, fmt: => String, arg: Any, argN: Any*): Unit = {
     info(t, message(fmt, arg, argN: _*))
   }
 
-  def info(t: Throwable, msg: => String) {
+  def info(t: Throwable, msg: => String): Unit = {
     if (info_?) logger.info(msg, t)
   }
 
-  def info(fmt: => String, arg: Any, argN: Any*) {
+  def info(fmt: => String, arg: Any, argN: Any*): Unit = {
     info(message(fmt, arg, argN: _*))
   }
 
-  def info(msg: => String) {
+  def info(msg: => String): Unit = {
     if (info_?) logger info msg
   }
 
   //Warning
-  def warning(t: Throwable, fmt: => String, arg: Any, argN: Any*) {
+  def warning(t: Throwable, fmt: => String, arg: Any, argN: Any*): Unit = {
     warning(t, message(fmt, arg, argN: _*))
   }
 
-  def warning(t: Throwable, msg: => String) {
+  def warning(t: Throwable, msg: => String): Unit = {
     if (warning_?) logger.warn(msg, t)
   }
 
-  def warning(fmt: => String, arg: Any, argN: Any*) {
+  def warning(fmt: => String, arg: Any, argN: Any*): Unit = {
     warning(message(fmt, arg, argN: _*))
   }
 
-  def warning(msg: => String) {
+  def warning(msg: => String): Unit = {
     if (warning_?) logger warn msg
   }
 
   //Error
-  def error(t: Throwable, fmt: => String, arg: Any, argN: Any*) {
+  def error(t: Throwable, fmt: => String, arg: Any, argN: Any*): Unit = {
     error(t, message(fmt, arg, argN: _*))
   }
 
-  def error(t: Throwable, msg: => String) {
+  def error(t: Throwable, msg: => String): Unit = {
     if (error_?) logger.error(msg, t)
   }
 
-  def error(fmt: => String, arg: Any, argN: Any*) {
+  def error(fmt: => String, arg: Any, argN: Any*): Unit = {
     error(message(fmt, arg, argN: _*))
   }
 
-  def error(msg: => String) {
+  def error(msg: => String): Unit = {
     if (error_?) logger error msg
   }
 

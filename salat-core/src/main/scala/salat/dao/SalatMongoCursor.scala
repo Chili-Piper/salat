@@ -50,7 +50,7 @@ trait SalatMongoCursorBase[T <: AnyRef] extends Logging {
 
   def hasNext = underlying.hasNext
 
-  def sort[A <% DBObject](orderBy: A): this.type = {
+  def sort[A](orderBy: A)(implicit ev$1: A => DBObject): this.type = {
     // The Java code returns a copy of itself (via _this_) so no clone/_newInstance
     underlying.sort(orderBy)
     this
@@ -58,7 +58,7 @@ trait SalatMongoCursorBase[T <: AnyRef] extends Logging {
 
   def count = underlying.count
 
-  def option_=(option: Int) {
+  def option_=(option: Int) = {
     underlying.addOption(option)
   }
 
@@ -70,7 +70,7 @@ trait SalatMongoCursorBase[T <: AnyRef] extends Logging {
 
   def options_=(opts: Int): Unit = underlying.setOptions(opts)
 
-  def hint[A <% DBObject](indexKeys: A): this.type = {
+  def hint[A](indexKeys: A)(implicit ev$1: A => DBObject): this.type = {
     underlying.hint(indexKeys)
     this
   }
@@ -100,7 +100,7 @@ trait SalatMongoCursorBase[T <: AnyRef] extends Logging {
 
   def cursorId = underlying.getCursorId
 
-  def close() {
+  def close() = {
     underlying.close()
   }
 
@@ -132,21 +132,21 @@ trait SalatMongoCursorBase[T <: AnyRef] extends Logging {
 
   def $maxScan[A: Numeric](max: T): this.type = addSpecial("$maxScan", max)
 
-  def $query[A <% DBObject](q: A): this.type = addSpecial("$query", q)
+  def $query[A](q: A)(implicit ev$1: A => DBObject): this.type = addSpecial("$query", q)
 
-  def $orderby[A <% DBObject](obj: A): this.type = addSpecial("$orderby", obj)
+  def $orderby[A](obj: A)(implicit ev$1: A => DBObject): this.type = addSpecial("$orderby", obj)
 
   def $explain(bool: Boolean = true): this.type = addSpecial("$explain", bool)
 
   def $snapshot(bool: Boolean = true): this.type = addSpecial("$snapshot", bool)
 
-  def $min[A <% DBObject](obj: A): this.type = addSpecial("$min", obj)
+  def $min[A](obj: A)(implicit ev$1: A => DBObject): this.type = addSpecial("$min", obj)
 
-  def $max[A <% DBObject](obj: A): this.type = addSpecial("$max", obj)
+  def $max[A](obj: A)(implicit ev$1: A => DBObject): this.type = addSpecial("$max", obj)
 
   def $showDiskLoc(bool: Boolean = true): this.type = addSpecial("$showDiskLoc", bool)
 
-  def $hint[A <% DBObject](obj: A): this.type = addSpecial("$hint", obj)
+  def $hint[A](obj: A)(implicit ev$1: A => DBObject): this.type = addSpecial("$hint", obj)
 
   def _newInstance(cursor: DBCursor): SalatMongoCursorBase[T]
 

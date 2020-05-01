@@ -55,8 +55,8 @@ class MongoJavaDriver252IntLongBugSpec extends SalatSpec {
 
       val c = HasCompany(Company(name = "Novus", year_of_inception = 2007, departments = Map.empty))
       val dbo: DBObject = grater[HasCompany].asDBObject(c)
-      val c_* = grater[HasCompany].asObject(parse(dbo.toString).asInstanceOf[DBObject])
-      c_* must_== c
+      val c_ = grater[HasCompany].asObject(parse(dbo.toString).asInstanceOf[DBObject])
+      c_ must_== c
     }
   }
 }

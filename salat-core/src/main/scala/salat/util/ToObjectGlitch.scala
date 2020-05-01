@@ -33,6 +33,7 @@ import com.mongodb.casbah.commons.TypeImports._
 import salat._
 
 import scala.tools.scalap.scalax.rules.scalasig.SymbolInfoSymbol
+import scala.jdk.javaapi.CollectionConverters._
 
 case class ToObjectGlitch[X <: AnyRef with Product](grater: ConcreteGrater[X], sym: SymbolInfoSymbol, constructor: Constructor[X], args: Seq[AnyRef], cause: Throwable) extends Error(
   """
@@ -58,9 +59,9 @@ case class GraterGlitch(path: String)(implicit ctx: Context) extends SalatGlitch
 
 object MissingTypeHint {
   def apply(x: Any): MissingTypeHint = x match {
-    case dbo: DBObject          => MissingTypeHint(scala.collection.JavaConversions.mapAsScalaMap(dbo.toMap))
-    case mdbo: MongoDBObject    => MissingTypeHint(scala.collection.JavaConversions.mapAsScalaMap(mdbo.toMap))
-    case m: java.util.Map[_, _] => MissingTypeHint(scala.collection.JavaConversions.mapAsScalaMap(m))
+    case dbo: DBObject          => MissingTypeHint(asScala(dbo.toMap))
+    case mdbo: MongoDBObject    => MissingTypeHint(asScala(mdbo.toMap))
+    case m: java.util.Map[_, _] => MissingTypeHint(asScala(m))
     case unknownThing           => sys.error("Help, can't find type error in clazz=%s\n%s".format(unknownThing.getClass.getName, unknownThing.toString))
   }
 }

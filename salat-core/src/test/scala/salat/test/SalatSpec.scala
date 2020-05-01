@@ -30,12 +30,12 @@ package salat.test
 import com.mongodb.casbah.Imports._
 import salat.conversions.RegisterJodaTimeZoneConversionHelpers
 import salat.{BigDecimalStrategy, Context}
-import org.specs2.specification.{Scope, Step}
+import org.specs2.specification._
 
 trait SalatSpec extends org.specs2.mutable.Specification with com.mongodb.casbah.commons.test.CasbahSpecificationBase {
 
   override def is =
-    Step {
+    step {
       //      log.info("beforeSpec: registering BSON conversion helpers")
       com.mongodb.casbah.commons.conversions.scala.RegisterConversionHelpers()
       com.mongodb.casbah.commons.conversions.scala.RegisterJodaTimeConversionHelpers()
@@ -44,7 +44,7 @@ trait SalatSpec extends org.specs2.mutable.Specification with com.mongodb.casbah
 
     } ^
       super.is ^
-      Step {
+      step {
         //        log.info("afterSpec: dropping test MongoDB '%s'".format(SalatSpecDb))
         MongoConnection().dropDatabase(SalatSpecDb)
       }

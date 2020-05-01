@@ -2,7 +2,7 @@
 import Dependencies._
 import BuildSettings._
 
-val testDeps = Seq(logbackCore, specs2, logbackClassic, casbah_specs, casbah_commons)
+val testDeps = Seq(logbackCore, specs2, specs2matchers, specs2junit, logbackClassic, casbah_specs, casbah_commons)
 val utilDeps = Seq(slf4jApi) ++ testDeps
 val coreDeps = Seq(casbah, commonsLang) ++ testDeps
 
