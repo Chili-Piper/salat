@@ -182,7 +182,7 @@ abstract class SalatDAO[ObjectType <: AnyRef, ID <: Any](val collection: MongoCo
      *  @return list of child ids matching parent id and search criteria
      */
     def idsForParentId(parentId: ID, query: DBObject = MongoDBObject.empty): List[ChildID] = {
-      childDao.collection.findA(parentIdQuery(parentId) ++ query, MongoDBObject("_id" -> 1)).map(_.expand[ChildID]("_id").get).toList
+      childDao.collection.find(parentIdQuery(parentId) ++ query, MongoDBObject("_id" -> 1)).map(_.expand[ChildID]("_id").get).toList
     }
 
     /**
@@ -191,7 +191,7 @@ abstract class SalatDAO[ObjectType <: AnyRef, ID <: Any](val collection: MongoCo
      *  @return list of child ids matching parent ids and search criteria
      */
     def idsForParentIds(parentIds: List[ID], query: DBObject = MongoDBObject.empty): List[ChildID] = {
-      childDao.collection.findA(parentIdsQuery(parentIds) ++ query, MongoDBObject("_id" -> 1)).map(_.expand[ChildID]("_id").get).toList
+      childDao.collection.find(parentIdsQuery(parentIds) ++ query, MongoDBObject("_id" -> 1)).map(_.expand[ChildID]("_id").get).toList
     }
 
     /**
@@ -348,7 +348,7 @@ abstract class SalatDAO[ObjectType <: AnyRef, ID <: Any](val collection: MongoCo
   def insert(t: ObjectType, wc: WriteConcern) = {
     val dbo = decorateDBO(t)
     try {
-      collection.insertA(dbo, wc)
+      collection.insert(dbo, wc)
       dbo.getAs[ID]("_id")
     }
     catch {
@@ -369,7 +369,7 @@ abstract class SalatDAO[ObjectType <: AnyRef, ID <: Any](val collection: MongoCo
       collection.insert(dbos: _*)
       dbos.map {
         dbo =>
-          dbo.getAs[ID]("_id") orElse collection.findOneA(dbo).flatMap(_.getAs[ID]("_id"))
+          dbo.getAs[ID]("_id") orElse collection.findOne(dbo).flatMap(_.getAs[ID]("_id"))
       }
     }
     catch {
@@ -384,7 +384,7 @@ abstract class SalatDAO[ObjectType <: AnyRef, ID <: Any](val collection: MongoCo
    *  @return list of IDs
    */
   def ids[A](query: A)(implicit ev$1: A => DBObject): List[ID] = {
-    collection.findA(decorateQuery(query), MongoDBObject("_id" -> 1)).map(_.expand[ID]("_id").get).toList
+    collection.find(decorateQuery(query), MongoDBObject("_id" -> 1)).map(_.expand[ID]("_id").get).toList
   }
 
   /**
@@ -393,7 +393,7 @@ abstract class SalatDAO[ObjectType <: AnyRef, ID <: Any](val collection: MongoCo
    *  @tparam A type view bound to DBObject
    *  @return (Option[ObjectType]) Some() of the object found, or <code>None</code> if no such object exists
    */
-  def findOne[A](t: A, rp: ReadPreference)(implicit ev$1: A => DBObject) = collection.findOneA(o = decorateQuery(t), fields = null, readPrefs = rp).map(_grater.asObject(_))
+  def findOne[A](t: A, rp: ReadPreference)(implicit ev$1: A => DBObject) = collection.findOne(o = decorateQuery(t), fields = null, readPrefs = rp).map(_grater.asObject(_))
 
   /**
    * @param id identifier
@@ -492,7 +492,7 @@ abstract class SalatDAO[ObjectType <: AnyRef, ID <: Any](val collection: MongoCo
    *  @return (Option[ObjectType]) Some() of the object found (before, or after, the update)
    */
   def findAndModify[A](q: A, t: ObjectType)(implicit ev$1: A => DBObject): Option[ObjectType] =
-    collection.findAndModifyA(q, toDBObject(t)).map(_grater.asObject(_))
+    collection.findAndModify(q, toDBObject(t)).map(_grater.asObject(_))
 
   /**
    * Finds the first document in the query (sorted) and updates it.
@@ -503,7 +503,7 @@ abstract class SalatDAO[ObjectType <: AnyRef, ID <: Any](val collection: MongoCo
    * @return (Option[ObjectType]) Some() of the old document, or <code>None</code> if no such object exists
    */
   def findAndModify[A, B](q: A, sort: B, t: ObjectType)(implicit ev$1: A => DBObject, ev$2: B => DBObject): Option[ObjectType] =
-    collection.findAndModifyA(q, sort, toDBObject(t)).map(_grater.asObject(_))
+    collection.findAndModify(q, sort, toDBObject(t)).map(_grater.asObject(_))
 
   /**
    * @param ref object for which to search
@@ -515,7 +515,7 @@ abstract class SalatDAO[ObjectType <: AnyRef, ID <: Any](val collection: MongoCo
    */
   def find[A, B](ref: A, keys: B, rp: ReadPreference)(implicit ev$1: A => DBObject, ev$2: B => DBObject) = SalatMongoCursor[ObjectType](
     _grater,
-    collection.findA(decorateQuery(ref), keys).asInstanceOf[MongoCursorBase].underlying.setReadPreference(rp)
+    collection.find(decorateQuery(ref), keys).asInstanceOf[MongoCursorBase].underlying.setReadPreference(rp)
   )
 
   /**
@@ -527,7 +527,7 @@ abstract class SalatDAO[ObjectType <: AnyRef, ID <: Any](val collection: MongoCo
    *  @return (Option[P]) Some() of the object found, or <code>None</code> if no such object exists
    */
   def projection[P <: CaseClass](query: DBObject, field: String)(implicit m: Manifest[P], ctx: Context): Option[P] = {
-    collection.findOneA(decorateQuery(query), MongoDBObject(field -> 1)).flatMap {
+    collection.findOne(decorateQuery(query), MongoDBObject(field -> 1)).flatMap {
       dbo =>
         dbo.expand[DBObject](field).map(grater[P].asObject(_))
     }
@@ -542,7 +542,7 @@ abstract class SalatDAO[ObjectType <: AnyRef, ID <: Any](val collection: MongoCo
    *  @return (Option[P]) Some() of the object found, or <code>None</code> if no such object exists
    */
   def primitiveProjection[P <: Any](query: DBObject, field: String)(implicit m: Manifest[P], ctx: Context): Option[P] = {
-    collection.findOneA(decorateQuery(query), MongoDBObject(field -> 1)).flatMap {
+    collection.findOne(decorateQuery(query), MongoDBObject(field -> 1)).flatMap {
       dbo =>
         dbo.expand[P](field)
     }
@@ -557,7 +557,7 @@ abstract class SalatDAO[ObjectType <: AnyRef, ID <: Any](val collection: MongoCo
    *  @return (List[P]) of the objects found
    */
   def projections[P <: CaseClass](query: DBObject, field: String)(implicit m: Manifest[P], ctx: Context): List[P] =
-    collection.findA(decorateQuery(query), MongoDBObject(field -> 1)).toList.flatMap {
+    collection.find(decorateQuery(query), MongoDBObject(field -> 1)).toList.flatMap {
       r =>
         r.expand[DBObject](field).map(grater[P].asObject(_))
     }
@@ -571,7 +571,7 @@ abstract class SalatDAO[ObjectType <: AnyRef, ID <: Any](val collection: MongoCo
    *  @return (List[P]) of the objects found
    */
   def primitiveProjections[P <: Any](query: DBObject, field: String)(implicit m: Manifest[P], ctx: Context): List[P] = {
-    collection.findA(query, MongoDBObject(field -> 1)).toList.flatMap(_.expand[P](field))
+    collection.find(query, MongoDBObject(field -> 1)).toList.flatMap(_.expand[P](field))
   }
 
   /**
@@ -592,7 +592,7 @@ abstract class SalatDAO[ObjectType <: AnyRef, ID <: Any](val collection: MongoCo
       }
       builder.result()
     }
-    collection.countA(decorateQuery(query), readPrefs = rp)
+    collection.count(decorateQuery(query), readPrefs = rp)
   }
 }
 

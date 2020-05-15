@@ -45,7 +45,7 @@ object BuildSettings {
 object Dependencies {
 
   private val LogbackVersion = "1.1.8"
-  private val CasbahVersion = "4.0.0-RC1-SNAPSHOT"
+  private val CasbahVersion = "4.0.0-RC2-SNAPSHOT"
 
   private val Specs2Version = "4.9.4"
   val specs2 = "org.specs2" %% "specs2-core" % Specs2Version % "test"
