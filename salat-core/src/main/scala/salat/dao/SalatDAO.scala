@@ -28,7 +28,7 @@
 package salat.dao
 
 import com.mongodb.casbah.Imports._
-import com.mongodb.casbah.MongoCursorBase
+import com.mongodb.casbah.{Imports, MongoCursorBase}
 import com.mongodb.casbah.commons.{Logging, MongoDBObject}
 import com.mongodb.{DBObject, WriteConcern}
 import salat._

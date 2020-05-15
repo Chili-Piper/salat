@@ -27,6 +27,7 @@
  */
 package salat.test.dao
 
+import com.mongodb.casbah.Imports
 import com.mongodb.casbah.Imports._
 import salat.annotations._
 import salat.dao._

@@ -117,7 +117,7 @@ trait BaseDAOMethods[ObjectType <: AnyRef, ID <: Any] {
    *  @tparam B type view bound to DBObject
    *  @return a typed cursor to iterate over results
    */
-  def find[A, B](ref: A, keys: B): SalatMongoCursor[ObjectType] = find(ref = ref, keys = keys, rp = defaultReadPreference)
+  def find[A, B](ref: A, keys: B)(implicit ev$1: A => DBObject, ev$2: B => DBObject): SalatMongoCursor[ObjectType] = find(ref = ref, keys = keys, rp = defaultReadPreference)
 
   /**
    * Queries for an object in this collection.
@@ -129,7 +129,7 @@ trait BaseDAOMethods[ObjectType <: AnyRef, ID <: Any] {
    *  @tparam B type view bound to DBObject
    *  @return a typed cursor to iterate over results
    */
-  def find[A, B](ref: A, keys: B, rp: ReadPreference): SalatMongoCursor[ObjectType]
+  def find[A, B](ref: A, keys: B, rp: ReadPreference)(implicit ev$1: A => DBObject, ev$2: B => DBObject): SalatMongoCursor[ObjectType]
 
   /**
    * Returns a single object from this collection.
@@ -228,7 +228,7 @@ trait BaseDAOMethods[ObjectType <: AnyRef, ID <: Any] {
    * @param t object with which to modify <tt>q</tt>
    * @return (Option[ObjectType]) Some() of the old document, or <code>None</code> if no such object exists
    */
-  def findAndModify[A, B](q: A, sort: B, t: ObjectType): Option[ObjectType]
+  def findAndModify[A, B](q: A, sort: B, t: ObjectType)(implicit ev$1: A => DBObject, ev$2: B => DBObject): Option[ObjectType]
 
   /**
    * Remove a matching object from the collection

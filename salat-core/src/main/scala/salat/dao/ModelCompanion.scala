@@ -28,6 +28,7 @@
 
 package salat.dao
 
+import com.mongodb.DBObject
 import com.mongodb.casbah.Imports._
 import salat._
 import salat.util.Logging
@@ -191,7 +192,7 @@ trait ModelCompanion[ObjectType <: AnyRef, ID <: Any] extends BaseDAOMethods[Obj
    *  @tparam B type view bound to DBObject
    *  @return a typed cursor to iterate over results
    */
-  def find[A, B](ref: A, keys: B, rp: ReadPreference = defaultReadPreference) = dao.find(ref, keys, rp)
+  def find[A, B](ref: A, keys: B, rp: ReadPreference = defaultReadPreference)(implicit ev$1: A => DBObject, ev$2: B => DBObject) = dao.find(ref, keys, rp)
 
   /**
    * @param t object for which to search
@@ -349,7 +350,7 @@ trait ModelCompanion[ObjectType <: AnyRef, ID <: Any] extends BaseDAOMethods[Obj
    * @param t    object with which to modify <tt>q</tt>
    * @return (Option[ObjectType]) Some() of the old document, or <code>None</code> if no such object exists
    */
-  def findAndModify[A, B](q: A, sort: B, t: ObjectType): Option[ObjectType] =
+  def findAndModify[A, B](q: A, sort: B, t: ObjectType)(implicit ev$1: A => DBObject, ev$2: B => DBObject): Option[ObjectType] =
     dao.findAndModify(q, sort, t)
 
   //

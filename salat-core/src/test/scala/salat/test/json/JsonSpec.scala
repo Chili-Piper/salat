@@ -273,7 +273,7 @@ class JsonSpec extends Specification with Logging with JsonMatchers {
           JField("d", JBool(false)) ::
           JField("e", JString("2011-12-28T14:37:56.008Z")) ::
           JField("u", JString(testURL.toString)) ::
-          JField("bd", JDouble(bd.doubleValue())) ::
+          JField("bd", JDouble(bd.doubleValue)) ::
           JField("bi", JInt(bi)) ::
           JField("o", JObject(JField("$oid", JString("4fd0bead4ceab231e6f3220b")) :: Nil)) ::
           Nil

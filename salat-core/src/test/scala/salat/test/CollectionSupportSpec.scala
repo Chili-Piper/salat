@@ -327,7 +327,7 @@ class CollectionSupportSpec extends SalatSpec {
 
     "support linked lists" in {
       "LinkedList[_]" in {
-        val coll = scala.collection.mutable.LinkedList(Thingy("A"), Thingy("B"))
+        val coll = scala.collection.mutable.ArrayBuffer(Thingy("A"), Thingy("B"))
         val queen = Queen(coll = coll)
         val dbo: MongoDBObject = grater[Queen].asDBObject(queen)
         dbo must havePair("coll" -> {
@@ -343,7 +343,7 @@ class CollectionSupportSpec extends SalatSpec {
         dao.findOneById(queen.id) must beSome(queen)
       }
       "DoubleLinkedList[_]" in {
-        val coll = scala.collection.mutable.DoubleLinkedList(Thingy("A"), Thingy("B"))
+        val coll = scala.collection.mutable.ListBuffer(Thingy("A"), Thingy("B"))
         val roger = Roger(coll = coll)
         val dbo: MongoDBObject = grater[Roger].asDBObject(roger)
         dbo must havePair("coll" -> {
