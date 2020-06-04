@@ -22,6 +22,7 @@
 
 import sbt._
 import Keys._
+import bintray.BintrayPlugin.autoImport._
 
 object BuildSettings {
 
@@ -30,22 +31,30 @@ object BuildSettings {
   val buildOrganization = "com.chilipiper"
   val buildScalaVersion = "2.13.2"
 
+  val casbahResolver = Resolver.bintrayRepo("chili-piper","casbah")
+
   val buildSettings = Defaults.coreDefaultSettings ++ Seq(
     organization := buildOrganization,
     scalaVersion := buildScalaVersion,
     parallelExecution in Test := false,
     testFrameworks += TestFrameworks.Specs2,
-    resolvers ++= Seq(typeSafeRepo, typeSafeSnapsRepo, oss, ossSnaps, scalazBintrayRepo),
+    resolvers ++= Seq(typeSafeRepo, typeSafeSnapsRepo, oss, ossSnaps, scalazBintrayRepo, casbahResolver),
     javacOptions ++= Seq("-source", "1.8", "-target", "1.8"),
     scalacOptions ++= Seq("-deprecation", "-unchecked", "-feature", "-language:_"),
-    crossScalaVersions ++= Seq("2.13.2")
+    crossScalaVersions ++= Seq("2.13.2"),
+
+    bintrayRepository := "salat",
+    bintrayOrganization := Some("chili-piper"),
+    bintrayReleaseOnPublish := true,
+
+    licenses := Seq("Apache-2.0" -> url("https://www.apache.org/licenses/LICENSE-2.0"))
   )
 }
 
 object Dependencies {
 
   private val LogbackVersion = "1.1.8"
-  private val CasbahVersion = "4.0.0-RC2-SNAPSHOT"
+  private val CasbahVersion = "4.0.0-RC2"
 
   private val Specs2Version = "4.9.4"
   val specs2 = "org.specs2" %% "specs2-core" % Specs2Version % "test"
